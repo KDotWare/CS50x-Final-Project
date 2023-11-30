@@ -28,6 +28,8 @@ def contactus():
         if len(message) > 1024:
             return redirect("/contactus")
 
+        #Insert to db here
+
     else:
         return render_template("contactus.html")
 
