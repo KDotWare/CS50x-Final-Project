@@ -46,6 +46,7 @@ nav {
     display: flex;
     flex-direction: row;
     justify-content: center;
+    align-items: center;
     color: #ffffff;
     border-radius: .5em .5em;
 }
@@ -107,6 +108,10 @@ footer {
  
  /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (max-width: 992px) {
+
+    .categories {
+        flex-direction: column;
+    }
 
     .contactus {
         flex-direction: column;
