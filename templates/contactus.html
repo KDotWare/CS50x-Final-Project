@@ -111,11 +111,10 @@
             xhr.open("POST", "/contactus", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-            let params = new FormData();
-            params.append(fullname.getAttribute("name"), fullname.value);
-            params.append(email.getAttribute("name"), email.value);
-            params.append(message.getAttribute("name"), message.value);
-            console.log(params);
+            let params = fullname.getAttribute("name") + "=" + fullname.value + "&"
+                        + email.getAttribute("name") + "=" + email.value + "&"
+                        + message.getAttribute("name") + "=" + message.value + "&";
+
             xhr.send(params);
         });
     </script>
