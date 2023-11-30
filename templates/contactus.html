@@ -8,24 +8,115 @@
     <div class="contactus container-fluid p-5">
         <img class="contactusImg" src="https://violetsvegnecomics.files.wordpress.com/2022/11/contact-violets-vegan-comics.png?w=661" width="500px">
         <div class="formArea w-100 m-3">
-            <form action="/contactus" method="POST">
-                <div class="mb-4">
-                    <label for="fullname" class="form-label">Full name:</label>
-                    <input class="form-control" type="text" name="fullname" placeholder="Enter name">
+            <div class="mb-4">
+                <label for="fullname" class="form-label">Full name:</label>
+                <div class="fullnameAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
                 </div>
+                <input class="form-control" type="text" name="fullname" maxlength="50" placeholder="Enter name">
+            </div>
 
-                <div class="mb-4">
-                    <label for="email" class="form-label">Email:</label>
-                    <input class="form-control" type="text" name="email" placeholder="Enter email">
+            <div class="mb-4">
+                <label for="email" class="form-label">Email:</label>
+                <div class="emailAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
                 </div>
+                <input class="form-control" type="text" name="email" placeholder="Enter email" required>
+            </div>
 
-                <div class="mb-5">
-                    <label for="message" class="form-label">Message:</label>
-                    <textarea class="form-control" name="message" rows="10" placeholder="Tell us here..."></textarea>
+            <div class="mb-5">
+                <label for="message" class="form-label">Message:</label>
+                <div class="messageAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
                 </div>
-
-                <center><input class="btn" type="submit" value="Contact us"></center>
-            </form>
+                <textarea class="form-control" name="message" rows="10" placeholder="Tell us here..." maxlength="1024" ></textarea>
+            </div>
+            <center><input class="btn" name="submit" type="submit" value="Contact us"></center>
         </div>
     </div>
+    <script>
+
+        const submit = document.querySelector("input[name=submit]");
+        let fullname = document.querySelector("input[name=fullname]");
+        let email = document.querySelector("input[name=email]");
+        let message = document.querySelector("textarea[name=message]");
+
+        function ValidateFields(fullname, email, message)
+        {
+            let isValid = true;
+
+            if (fullname == "")
+            {
+                let fnAlert = document.querySelector(".fullnameAlert");
+                fnAlert.getElementsByTagName("span")[0].innerHTML = "name cannot be empty!"
+                fnAlert.style.display = "block";
+                isValid = false;
+            }
+
+            if (email == "")
+            {
+                let eAlert = document.querySelector(".emailAlert");
+                eAlert.getElementsByTagName("span")[0].innerHTML = "email cannot be empty!"
+                eAlert.style.display = "block";
+                isValid = false;
+            }
+
+            if (message == "")
+            {
+                let msgAlert = document.querySelector(".messageAlert");
+                msgAlert.getElementsByTagName("span")[0].innerHTML = "email cannot be empty!"
+                msgAlert.style.display = "block";
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        fullname.addEventListener("input", function(event)
+        {
+            if (event.target.value != "")
+            {
+                let fnAlert = document.querySelector(".fullnameAlert");
+                fnAlert.style.display = "none";
+            }
+        });
+
+        email.addEventListener("input", function(event)
+        {
+            if (event.target.value != "")
+            {
+                let eAlert = document.querySelector(".emailAlert");
+                eAlert.style.display = "none";
+            }
+        });
+
+        message.addEventListener("input", function(event)
+        {
+            if (event.target.value != "")
+            {
+                let msgAlert = document.querySelector(".messageAlert");
+                msgAlert.style.display = "none";
+            }
+        });
+
+        submit.addEventListener("click", function()
+        {
+            if (!ValidateFields(fullname.value, email.value, message.value))
+            {
+                return 1;
+            }
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "/contactus", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+            let params = new FormData();
+            params.append(fullname.getAttribute("name"), fullname.value);
+            params.append(email.getAttribute("name"), email.value);
+            params.append(message.getAttribute("name"), message.value);
+            console.log(params);
+            xhr.send(params);
+        });
+    </script>
 {% endblock %}
