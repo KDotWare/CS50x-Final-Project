@@ -86,6 +86,11 @@ nav {
 footer {
     background-color: #1aa644;
     height: 15em;
+    color: #ffffff;
+}
+
+footer a {
+    color: #ffffff;
 }
 
 .contactus {
