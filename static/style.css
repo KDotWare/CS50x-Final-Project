@@ -90,11 +90,12 @@ footer {
 .contactus {
     display: flex;
     flex-direction: row;
+    justify-content: center;
 }
 
 .formArea {
-    border: 1px solid #1aa644; 
-    border-radius: .2em; 
+    border: 1px solid #1aa644;
+    border-radius: .2em;
     padding: 10em 5em 5em 5em;
 }
 
@@ -102,4 +103,17 @@ footer {
     border-radius: 1em;
     background-color: #0d5923;
     color:#ffffff;
+}
+ 
+ /* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (max-width: 992px) {
+
+    .contactus {
+        flex-direction: column;
+    }
+
+    .contactusImg {
+        margin: 0 auto 0 auto;
+        width: 30%;
+    }
 }
