@@ -10,5 +10,9 @@ def index():
 def contactus():
     return render_template("contactus.html")
 
+@app.route("/register", methods=["GET"])
+def register():
+    return render_template("auth/register.html")
+
 if __name__ == "__main__":
     app.run()
