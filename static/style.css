@@ -81,3 +81,8 @@ nav {
     letter-spacing: .3em;
     font-weight: bold;
 }
+
+footer {
+    background-color: #1aa644;
+    height: 15em;
+}
