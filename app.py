@@ -51,5 +51,9 @@ def register():
     else:
         return render_template("auth/register.html")
 
+@app.route("/login", methods=["GET"])
+def login():
+    return render_template("auth/login.html")
+
 if __name__ == "__main__":
     app.run()
