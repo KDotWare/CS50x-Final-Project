@@ -13,6 +13,12 @@ def index():
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
     if request.method == "POST":
+        """
+            Todo's:
+            - insert to database
+            - create database structure for contact us
+            - create response when post is success or not
+        """
         fullname = request.form.get("fullname")
         email = request.form.get("email")
         message = request.form.get("message")
@@ -28,8 +34,6 @@ def contactus():
 
         if len(message) > 1024:
             return redirect("/contactus")
-
-        #Insert to db here
 
     else:
         return render_template("contactus.html")
