@@ -11,25 +11,41 @@
             <h2 class="mb-4">Register</h2>
             <div class="mb-4">
                 <label for="firstname" class="form-label">First name:</label>
+                <div class="firstnameAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
                 <input class="form-control" type="text" name="firstname" maxlength="30" placeholder="Enter first name">
             </div>
             <div class="mb-4">
                 <label for="lastname" class="form-label">Last name:</label>
+                <div class="lastnameAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
                 <input class="form-control" type="text" name="lastname" maxlength="30" placeholder="Enter last name">
             </div>
             <div class="mb-4">
                 <label for="email" class="form-label">Email:</label>
+                <div class="emailAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
                 <input class="form-control" type="text" name="email" placeholder="Enter email" required>
             </div>
             <div class="mb-4">
                 <label for="password" class="form-label">Password:</label>
+                <div class="passwordAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
                 <input class="form-control" type="password" name="password" placeholder="Enter password" required>
             </div>
             <div class="mb-4">
                 <label for="repassword" class="form-label">Confirm password:</label>
+                <div class="repasswordAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
                 <input class="form-control" type="password" name="repassword" placeholder="Enter confirm password" required>
             </div>
             <input class="btn" name="submit" type="submit" value="Register">
         </div>
     </div>
+    <script src="{{ url_for('static', filename='js/register.js') }}"></script>
 {% endblock %}
