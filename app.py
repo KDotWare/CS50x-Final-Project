@@ -12,7 +12,7 @@ def index():
 
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
-    if request.method == "POST":
+    if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
             - insert to database
