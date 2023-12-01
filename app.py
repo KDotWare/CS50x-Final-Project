@@ -4,6 +4,7 @@ import re
 app = Flask(__name__)
 
 emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+formContentType = "application/x-www-form-urlencoded"
 
 @app.route("/", methods=["GET"])
 def index():
@@ -33,9 +34,18 @@ def contactus():
     else:
         return render_template("contactus.html")
 
-@app.route("/register", methods=["GET"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("auth/register.html")
+    if request.method == "POST" and request.content_type == formContentType:
+        """
+            Todo's:
+            - get form values
+            - validate form values
+            - insert to database
+            - create response when success or not
+        """
+    else:
+        return render_template("auth/register.html")
 
 if __name__ == "__main__":
     app.run()
