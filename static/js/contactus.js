@@ -3,31 +3,31 @@ let fullname = document.querySelector("input[name=fullname]");
 let email = document.querySelector("input[name=email]");
 let message = document.querySelector("textarea[name=message]");
 
+function FieldError(elementClass, message, display)
+{
+    elementClass.getElementsByTagName("span")[0].innerHTML = message;
+    elementClass.style.display = display;
+}
+
 function ValidateFields(fullname, email, message)
 {
     let isValid = true;
 
     if (fullname == "")
     {
-        let fnAlert = document.querySelector(".fullnameAlert");
-        fnAlert.getElementsByTagName("span")[0].innerHTML = "name cannot be empty!"
-        fnAlert.style.display = "block";
+        FieldError(document.querySelector(".fullnameAlert"), "name cannot be empty!", "block");
         isValid = false;
     }
 
     if (email == "")
     {
-        let eAlert = document.querySelector(".emailAlert");
-        eAlert.getElementsByTagName("span")[0].innerHTML = "email cannot be empty!"
-        eAlert.style.display = "block";
+        FieldError(document.querySelector(".emailAlert"), "email cannot be empty!", "block");
         isValid = false;
     }
 
     if (message == "")
     {
-        let msgAlert = document.querySelector(".messageAlert");
-        msgAlert.getElementsByTagName("span")[0].innerHTML = "email cannot be empty!"
-        msgAlert.style.display = "block";
+        FieldError(document.querySelector(".messageAlert"), "message cannot be empty!", "block");
         isValid = false;
     }
 
@@ -38,8 +38,7 @@ fullname.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        let fnAlert = document.querySelector(".fullnameAlert");
-        fnAlert.style.display = "none";
+        FieldError(document.querySelector(".fullnameAlert"), "", "none");
     }
 });
 
@@ -47,8 +46,7 @@ email.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        let eAlert = document.querySelector(".emailAlert");
-        eAlert.style.display = "none";
+        FieldError(document.querySelector(".emailAlert"), "", "none");
     }
 });
 
@@ -56,8 +54,7 @@ message.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        let msgAlert = document.querySelector(".messageAlert");
-        msgAlert.style.display = "none";
+        FieldError(document.querySelector(".messageAlert"), "", "none");
     }
 });
 
