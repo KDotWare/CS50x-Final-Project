@@ -5,5 +5,31 @@
 {% endblock %}
 
 {% block main %}
-
+    <div class="container-fluid">
+        <div class="registerForm m-5 p-5">
+            <img class="mb-2" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Vegan_friendly_icon.svg/2048px-Vegan_friendly_icon.svg.png" width="100px">
+            <h2 class="mb-4">Register</h2>
+            <div class="mb-4">
+                <label for="firstname" class="form-label">First name:</label>
+                <input class="form-control" type="text" name="firstname" maxlength="30" placeholder="Enter first name">
+            </div>
+            <div class="mb-4">
+                <label for="lastname" class="form-label">Last name:</label>
+                <input class="form-control" type="text" name="lastname" maxlength="30" placeholder="Enter last name">
+            </div>
+            <div class="mb-4">
+                <label for="email" class="form-label">Email:</label>
+                <input class="form-control" type="text" name="email" placeholder="Enter email" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password:</label>
+                <input class="form-control" type="password" name="password" placeholder="Enter password" required>
+            </div>
+            <div class="mb-4">
+                <label for="repassword" class="form-label">Confirm password:</label>
+                <input class="form-control" type="password" name="repassword" placeholder="Enter confirm password" required>
+            </div>
+            <input class="btn" name="submit" type="submit" value="Register">
+        </div>
+    </div>
 {% endblock %}
