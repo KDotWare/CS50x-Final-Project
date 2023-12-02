@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 import re
 
 app = Flask(__name__)
@@ -16,24 +16,39 @@ def contactus():
         """
             Todo's:
             - insert to database
-            - create database structure for contact us
-            - create response when post is success or not
         """
         fullname = request.form.get("fullname")
         email = request.form.get("email")
         message = request.form.get("message")
 
-        if fullname == "" or email == "" or message == "":
-            return redirect("/contactus")
+        json = {}
+        data = {}
 
-        if len(fullname) > 50:
-            return redirect("/contactus")
+        if fullname == "":
+            data["fullname"] = "Missing full name!"
+        elif len(fullname) > 50:
+            data["fullname"] = "Full name too large!"
 
-        if not re.match(emailRegex, email):
-            return redirect("/contactus")
+        if email == "":
+            data["email"] = "Missing email!"
+        elif not re.match(emailRegex, email):
+            data["email"] = "Invalid email!"
 
-        if len(message) > 1024:
-            return redirect("/contactus")
+        if message == "":
+            data["message"] = "Missing message!"
+        elif len(message) > 1024:
+            data["message"] = "Message too large!"
+
+        if data:
+            json["status"] = 400
+            json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
+            json["data"] = data
+            return jsonify(json)
+
+        json["status"] = 200
+        json["message"] = "Thank you for reaching out! Your message has been successfully received. Our team will review it and get back to you as soon as possible."
+        json["data"] = data
+        return jsonify(json)
 
     else:
         return render_template("contactus.html")
