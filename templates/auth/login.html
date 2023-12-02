@@ -5,4 +5,19 @@
 {% endblock %}
 
 {% block main %}
+    <div class="container-fluid">
+        <div class="registerForm m-5 p-5">
+            <img class="mb-2" src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Vegan_friendly_icon.svg/2048px-Vegan_friendly_icon.svg.png" width="100px">
+            <h2 class="mb-4">Login</h2>
+            <div class="mb-4">
+                <label for="email" class="form-label">Email:</label>
+                <input class="form-control" type="email" name="email" placeholder="Enter email" required>
+            </div>
+            <div class="mb-4">
+                <label for="password" class="form-label">Password:</label>
+                <input class="form-control" type="password" name="password" placeholder="Enter password" required>
+            </div>
+            <input class="btn" name="submit" type="submit" value="Login">
+        </div>
+    </div>
 {% endblock %}
