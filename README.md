@@ -30,3 +30,11 @@ for this project's database.
 ```
 sudo apt install sqlite3
 ```
+### Project's environment
+```
+pip3 install flask
+```
+and
+```
+pip3 install flask_session
+```
