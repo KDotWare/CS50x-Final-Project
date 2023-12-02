@@ -3,42 +3,19 @@ let fullname = document.querySelector("input[name=fullname]");
 let email = document.querySelector("input[name=email]");
 let message = document.querySelector("textarea[name=message]");
 
-function FieldError(elementClass, message, display)
+function FieldError(field, message, display)
 {
-    elementClass.getElementsByTagName("span")[0].innerHTML = message;
-    elementClass.style.display = display;
-}
-
-function ValidateFields(fullname, email, message)
-{
-    let isValid = true;
-
-    if (fullname == "")
-    {
-        FieldError(document.querySelector(".fullnameAlert"), "name cannot be empty!", "block");
-        isValid = false;
-    }
-
-    if (email == "")
-    {
-        FieldError(document.querySelector(".emailAlert"), "email cannot be empty!", "block");
-        isValid = false;
-    }
-
-    if (message == "")
-    {
-        FieldError(document.querySelector(".messageAlert"), "message cannot be empty!", "block");
-        isValid = false;
-    }
-
-    return isValid;
+    field = "." + field + "Alert";
+    let element = document.querySelector(field);
+    element.getElementsByTagName("span")[0].innerHTML = message;
+    element.style.display = display;
 }
 
 fullname.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".fullnameAlert"), "", "none");
+        FieldError("fullname", "", "none");
     }
 });
 
@@ -46,7 +23,7 @@ email.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".emailAlert"), "", "none");
+        FieldError("email", "", "none");
     }
 });
 
@@ -54,18 +31,32 @@ message.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".messageAlert"), "", "none");
+        FieldError("message", "", "none");
     }
 });
 
 submit.addEventListener("click", function()
 {
-    if (!ValidateFields(fullname.value, email.value, message.value))
-    {
-        return 1;
-    }
-
     let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState == 4 && xhr.status == 200)
+        {
+            let apiResponse = JSON.parse(xhr.responseText);
+
+            if (apiResponse.status == 400)
+            {
+                for (let key in apiResponse.data)
+                {
+                    FieldError(key, apiResponse.data[key], "block");
+                }
+            } else if (apiResponse.status == 200)
+            {
+                window.alert(apiResponse.message);
+            }
+        }
+    }
 
     xhr.open("POST", "/contactus", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
