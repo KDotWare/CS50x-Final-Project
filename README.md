@@ -5,3 +5,7 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
 
 > [!NOTE]
 > Still in development
+
+### Environment Installation
+> [!IMPORTANT]
+> This project is developing and built on a Linux environment.
