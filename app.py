@@ -51,9 +51,18 @@ def register():
     else:
         return render_template("auth/register.html")
 
-@app.route("/login", methods=["GET"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
-    return render_template("auth/login.html")
+    if request.method == "POST" and request.content_type == formContentType:
+        """
+            Todo's:
+            - get form values
+            - validate form values
+            - insert to database
+            - create response when success or not
+        """
+    else:
+        return render_template("auth/login.html")
 
 if __name__ == "__main__":
     app.run()

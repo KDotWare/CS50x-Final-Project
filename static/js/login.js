@@ -23,6 +23,8 @@ function ValidateFields(email, password)
         FieldError(document.querySelector(".passwordAlert"), "password is empty!", "block");
         isValid = false;
     }
+
+    return isValid;
 }
 
 email.addEventListener("input", function(event)
