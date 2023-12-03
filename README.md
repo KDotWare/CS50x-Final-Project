@@ -7,7 +7,9 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
 > Still in development
 
 ## Features
-
+- Data Interchange:
+  - Front-end to Back-end used ***application/x-www-form-urlencoded***
+  - Back-end to Front-end used ***application/json***
 
 ## Installation
 > [!IMPORTANT]
@@ -31,11 +33,11 @@ sudo apt install sqlite3
 ```
 ### Project's environment
 ```
-pip3 install flask
+pip3 install flask && pip3 install flask_session
 ```
-and
+and then 
 ```
-pip3 install flask_session
+git clone 
 ```
 
 ## Technologies Used
