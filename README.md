@@ -6,17 +6,16 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
 > [!NOTE]
 > Still in development
 
+## Features
+
+
 ## Installation
 > [!IMPORTANT]
 > This project is developing and built on a Linux environment.
 
 First ensure that you're update to date.
 ```
-sudo apt update
-```
-and if upgrade is available.
-```
-sudo apt upgrade
+sudo apt update && sudo apt upgrade
 ```
 after that, make sure python3 is installed.
 ```
@@ -38,3 +37,12 @@ and
 ```
 pip3 install flask_session
 ```
+
+## Technologies Used
+- Front-end:
+  - html
+  - css & bootstrap
+  - javascript
+- Back-end:
+  - Python flask
+  - sqlite3
