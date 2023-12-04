@@ -2,36 +2,19 @@ const submit = document.querySelector("input[name=submit]");
 let email = document.querySelector("input[name=email]");
 let password = document.querySelector("input[name=password]");
 
-function FieldError(elementClass, message, display)
+function FieldError(field, message, display)
 {
-    elementClass.getElementsByTagName("span")[0].innerHTML = message;
-    elementClass.style.display = display;
-}
-
-function ValidateFields(email, password)
-{
-    let isValid = true;
-
-    if (email == "")
-    {
-        FieldError(document.querySelector(".emailAlert"), "email is empty!", "block");
-        isValid = false;
-    }
-
-    if (password == "")
-    {
-        FieldError(document.querySelector(".passwordAlert"), "password is empty!", "block");
-        isValid = false;
-    }
-
-    return isValid;
+    field = "." + field + "Alert";
+    let element = document.querySelector(field);
+    element.getElementsByTagName("span")[0].innerHTML = message;
+    element.style.display = display;
 }
 
 email.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".emailAlert"), "", "none");
+        FieldError("email", "", "none");
     }
 });
 
@@ -39,18 +22,32 @@ password.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".passwordAlert"), "", "none");
+        FieldError("password", "", "none");
     }
 });
 
 submit.addEventListener("click", function()
 {
-    if (!ValidateFields(email.value, password.value))
-    {
-        return 1;
-    }
-
     let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState == 4 && xhr.status == 200)
+        {
+            let apiResponse = JSON.parse(xhr.responseText);
+
+            if (apiResponse.status == 400)
+            {
+                for (let key in apiResponse.data)
+                {
+                    FieldError(key, apiResponse.data[key], "block");
+                }
+            } else if (apiResponse.status == 200)
+            {
+                window.alert(apiResponse.message);
+            }
+        }
+    }
 
     xhr.open("POST", "/login", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
