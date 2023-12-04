@@ -28,17 +28,17 @@ def contactus():
         if fullname == "":
             data["fullname"] = "Missing full name!"
         elif len(fullname) > 50:
-            data["fullname"] = "Full name too large!"
+            data["fullname"] = "Full name too long!"
 
         if email == "":
             data["email"] = "Missing email!"
         elif not re.match(emailRegex, email):
-            data["email"] = "Invalid email!"
+            data["email"] = "Rejected email!"
 
         if message == "":
             data["message"] = "Missing message!"
         elif len(message) > 1024:
-            data["message"] = "Message too large!"
+            data["message"] = "Message too long!"
 
         if data:
             json["status"] = 400
