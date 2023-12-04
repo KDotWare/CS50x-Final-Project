@@ -118,11 +118,36 @@ def login():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - get form values
-            - validate form values
+            - add validation for nonetype object from form
+            - validate if email not exist
             - insert to database
-            - create response when success or not
         """
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        json = {}
+        data = {}
+
+        if email == "":
+            data["email"] = "Missing email!"
+        elif not re.match(emailRegex, email):
+            data["email"] = "Invalid email!"
+
+        if password == "":
+            data["password"] = "Missing password!"
+        elif len(password) > 30:
+            data["password"] = "Password too long!"
+
+        if data:
+            json["status"] = 400
+            json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
+            json["data"] = data
+            return jsonify(json)
+
+        json["status"] = 200
+        json["message"] = "You're successfully login!"
+        json["data"] = data
+        return jsonify(json)
     else:
         return render_template("auth/login.html")
 
