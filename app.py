@@ -59,7 +59,6 @@ def register():
         """
             Todo's:
             - insert to database
-            - create response when success or not
         """
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
