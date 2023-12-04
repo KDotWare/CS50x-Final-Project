@@ -15,6 +15,7 @@ def contactus():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
+            - add validation for nonetype object from form
             - insert to database
         """
         fullname = request.form.get("fullname")
@@ -58,6 +59,8 @@ def register():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
+            - add validation for nonetype object from form
+            - validate if email already exist
             - insert to database
         """
         firstname = request.form.get("firstname")
