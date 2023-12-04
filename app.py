@@ -58,11 +58,56 @@ def register():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - get form values
-            - validate form values
             - insert to database
             - create response when success or not
         """
+        firstname = request.form.get("firstname")
+        lastname = request.form.get("lastname")
+        email = request.form.get("email")
+        password = request.form.get("password")
+        repassword = request.form.get("repassword")
+
+        json = {}
+        data = {}
+
+        if firstname == "":
+            data["firstname"] = "Missing first name!"
+        elif len(firstname) > 30:
+            data["firstname"] = "First name too long!"
+
+        if lastname == "":
+            data["lastname"] = "Missing last name!"
+        elif len(lastname) > 30:
+            data["lastname"] = "Last name too long!"
+
+        if email == "":
+            data["email"] = "Missing email!"
+        elif not re.match(emailRegex, email):
+            data["email"] = "Invalid email!"
+
+        if password == "":
+            data["password"] = "Missing password!"
+        elif len(password) > 30:
+            data["password"] = "Password too long!"
+
+        if repassword == "":
+            data["repassword"] = "Missing confirm password!"
+        elif len(repassword) > 30:
+            data["repassword"] = "Confirm password too long!"
+        elif repassword != password:
+            data["repassword"] = "Confirm password not match!"
+
+        if data:
+            json["status"] = 400
+            json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
+            json["data"] = data
+            return jsonify(json)
+
+        json["status"] = 200
+        json["message"] = "You're successfully registered!"
+        json["data"] = data
+        return jsonify(json)
+
     else:
         return render_template("auth/register.html")
 

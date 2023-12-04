@@ -5,60 +5,19 @@ let email = document.querySelector("input[name=email]");
 let password = document.querySelector("input[name=password]");
 let repassword = document.querySelector("input[name=repassword]");
 
-function FieldError(elementClass, message, display)
+function FieldError(field, message, display)
 {
-    elementClass.getElementsByTagName("span")[0].innerHTML = message;
-    elementClass.style.display = display;
-}
-
-function ValidateFields(firstname, lastname, email, password, repassword)
-{
-    let isValid = true;
-
-    if (firstname == "")
-    {
-        FieldError(document.querySelector(".firstnameAlert"), "first name is empty!", "block");
-        isValid = false;
-    }
-
-    if (lastname == "")
-    {
-        FieldError(document.querySelector(".lastnameAlert"), "last name is empty!", "block");
-        isValid = false;
-    }
-
-    if (email == "")
-    {
-        FieldError(document.querySelector(".emailAlert"), "email is empty!", "block");
-        isValid = false;
-    }
-
-    if (password == "")
-    {
-        FieldError(document.querySelector(".passwordAlert"), "password is empty!", "block");
-        isValid = false;
-    }
-
-    if (repassword == "")
-    {
-        FieldError(document.querySelector(".repasswordAlert"), "confirm password is empty!", "block");
-        isValid = false;
-    }
-
-    if (password != repassword)
-    {
-        FieldError(document.querySelector(".repasswordAlert"), "confirm password is not match!", "block");
-        isValid = false;
-    }
-
-    return isValid;
+    field = "." + field + "Alert";
+    let element = document.querySelector(field);
+    element.getElementsByTagName("span")[0].innerHTML = message;
+    element.style.display = display;
 }
 
 firstname.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".firstnameAlert"), "", "none");
+        FieldError("firstname", "", "none");
     }
 });
 
@@ -66,7 +25,7 @@ lastname.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".lastnameAlert"), "", "none");
+        FieldError("lastname", "", "none");
     }
 });
 
@@ -74,7 +33,7 @@ email.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".emailAlert"), "", "none");
+        FieldError("email", "", "none");
     }
 });
 
@@ -82,7 +41,7 @@ password.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".passwordAlert"), "", "none");
+        FieldError("password", "", "none");
     }
 });
 
@@ -90,18 +49,32 @@ repassword.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError(document.querySelector(".repasswordAlert"), "", "none");
+        FieldError("repassword", "", "none");
     }
 });
 
 submit.addEventListener("click", function()
 {
-    if (!ValidateFields(firstname.value, lastname.value, email.value, password.value, repassword.value))
-    {
-        return 1;
-    }
-
     let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState == 4 && xhr.status == 200)
+        {
+            let apiResponse = JSON.parse(xhr.responseText);
+
+            if (apiResponse.status == 400)
+            {
+                for (let key in apiResponse.data)
+                {
+                    FieldError(key, apiResponse.data[key], "block");
+                }
+            } else if (apiResponse.status == 200)
+            {
+                window.alert(apiResponse.message);
+            }
+        }
+    }
 
     xhr.open("POST", "/register", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
@@ -109,7 +82,7 @@ submit.addEventListener("click", function()
     let params = firstname.getAttribute("name") + "=" + firstname.value + "&"
                 + lastname.getAttribute("name") + "=" + lastname.value + "&"
                 + email.getAttribute("name") + "=" + email.value + "&"
-                + password.getAttribute("name") + "=" + password.value + "&";
+                + password.getAttribute("name") + "=" + password.value + "&"
                 + repassword.getAttribute("name") + "=" + repassword.value;
 
     xhr.send(params);
