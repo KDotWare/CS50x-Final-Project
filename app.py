@@ -25,7 +25,7 @@ def contactus():
         data = {}
 
         if fullname is None:
-            data["fullname"] = "Rejected field"
+            data["fullname"] = "Rejected field!"
         elif fullname == "":
             data["fullname"] = "Missing full name!"
         elif len(fullname) > 50:
