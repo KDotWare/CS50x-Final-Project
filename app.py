@@ -71,6 +71,8 @@ def contactus():
             conn.rollback()
             return jsonify(json)
 
+        conn.close()
+
         json["status"] = 200
         json["message"] = "Thank you for reaching out! Your message has been successfully received. Our team will review it and get back to you as soon as possible."
         json["data"] = {}
