@@ -10,6 +10,8 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
 - Data Interchange:
   - Front-end to Back-end used ***application/x-www-form-urlencoded***
   - Back-end to Front-end used ***application/json***
+- Security:
+  - hash user's plaintext password, method ***sha256***
 
 ## Installation
 > [!IMPORTANT]
@@ -19,15 +21,11 @@ First ensure that you're up to date.
 ```
 sudo apt update && sudo apt upgrade
 ```
-after that, make sure python3 is installed.
+after that, install python3 and python3's package manager.
 ```
-sudo apt install python3
+sudo apt install python3 && sudo apt install python3-pip
 ```
-and python's package manager.
-```
-sudo apt install python3-pip
-```
-for this project's database.
+project's database.
 ```
 sudo apt install sqlite3
 ```
