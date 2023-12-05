@@ -64,7 +64,6 @@ def register():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - add validation for nonetype object from form
             - validate if email already exist
             - insert to database
         """
@@ -77,27 +76,37 @@ def register():
         json = {}
         data = {}
 
-        if firstname == "":
+        if firstname is None:
+            data["firstname"] = "Rejected field!"
+        elif firstname == "":
             data["firstname"] = "Missing first name!"
         elif len(firstname) > 30:
             data["firstname"] = "First name too long!"
 
-        if lastname == "":
+        if lastname is None:
+            data["lastname"] = "Rejected field!"
+        elif lastname == "":
             data["lastname"] = "Missing last name!"
         elif len(lastname) > 30:
             data["lastname"] = "Last name too long!"
 
-        if email == "":
+        if email is None:
+            data["email"] = "Rejected field!"
+        elif email == "":
             data["email"] = "Missing email!"
         elif not re.match(emailRegex, email):
             data["email"] = "Invalid email!"
 
-        if password == "":
+        if password is None:
+            data["password"] = "Rejected field!"
+        elif password == "":
             data["password"] = "Missing password!"
         elif len(password) > 30:
             data["password"] = "Password too long!"
 
-        if repassword == "":
+        if repassword is None:
+            data["repassword"] = "Rejected field!"
+        elif repassword == "":
             data["repassword"] = "Missing confirm password!"
         elif len(repassword) > 30:
             data["repassword"] = "Confirm password too long!"
