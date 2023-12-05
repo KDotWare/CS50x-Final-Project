@@ -84,7 +84,6 @@ def register():
         """
             Todo's:
             - validate if email already exist
-            - insert to database
         """
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
