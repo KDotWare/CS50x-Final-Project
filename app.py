@@ -1,3 +1,9 @@
+"""
+    Todo's:
+    - create execution parameter
+    - parameter setup database key is -sdb and value is [databasename]
+"""
+
 from flask import Flask, render_template, request, redirect, jsonify
 from werkzeug.security import generate_password_hash
 import re
