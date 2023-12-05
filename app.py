@@ -24,6 +24,7 @@ def contactus():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
+            - Prevent form spam 
         """
         fullname = request.form.get("fullname")
         email = request.form.get("email")
