@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 import re
+import sqlite3
+import datetime
 
 app = Flask(__name__)
 
@@ -15,7 +17,6 @@ def contactus():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - insert to database
         """
         fullname = request.form.get("fullname")
         email = request.form.get("email")
@@ -49,6 +50,17 @@ def contactus():
             json["status"] = 400
             json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
             json["data"] = data
+            return jsonify(json)
+
+        conn = sqlite3.connect("development.db")
+        cur = conn.cursor()
+        cur.execute("BEGIN")
+        data = (fullname, email, message, datetime.datetime.now())
+        try:
+            cur.execute("INSERT INTO contactus (fullname, email, message, createddate) VALUES (?, ?, ?, ?)", data)
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
             return jsonify(json)
 
         json["status"] = 200
