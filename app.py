@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, jsonify
+from werkzeug.security import generate_password_hash
 import re
 import sqlite3
 import datetime
@@ -131,9 +132,20 @@ def register():
             json["data"] = data
             return jsonify(json)
 
+        conn = sqlite3.connect("development.db")
+        cur = conn.cursor()
+        cur.execute("BEGIN")
+        data = (firstname, lastname, email, generate_password_hash(password, "pbkdf2:sha256"), datetime.datetime.now())
+        try:
+            cur.execute("INSERT INTO user (firstname, lastname, email, password, registereddate) VALUES (?, ?, ?, ?, ?)", data)
+            conn.commit()
+        except Exception as e:
+            conn.rollback()
+            return jsonify(json)
+
         json["status"] = 200
         json["message"] = "You're successfully registered!"
-        json["data"] = data
+        json["data"] = {}
         return jsonify(json)
 
     else:
