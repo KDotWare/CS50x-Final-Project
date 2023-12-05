@@ -132,7 +132,6 @@ def login():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - add validation for nonetype object from form
             - validate if email not exist
             - insert to database
         """
@@ -142,12 +141,16 @@ def login():
         json = {}
         data = {}
 
-        if email == "":
+        if email is None:
+            data["email"] = "Rejected field!"
+        elif email == "":
             data["email"] = "Missing email!"
         elif not re.match(emailRegex, email):
             data["email"] = "Invalid email!"
 
-        if password == "":
+        if password is None:
+            data["password"] = "Rejected field!"
+        elif password == "":
             data["password"] = "Missing password!"
         elif len(password) > 30:
             data["password"] = "Password too long!"
