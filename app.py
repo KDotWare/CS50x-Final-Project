@@ -15,7 +15,6 @@ def contactus():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - add validation for nonetype object from form
             - insert to database
         """
         fullname = request.form.get("fullname")
@@ -25,16 +24,22 @@ def contactus():
         json = {}
         data = {}
 
-        if fullname == "":
+        if fullname is None:
+            data["fullname"] = "Rejected field"
+        elif fullname == "":
             data["fullname"] = "Missing full name!"
         elif len(fullname) > 50:
             data["fullname"] = "Full name too long!"
 
-        if email == "":
+        if email is None:
+            data["email"] = "Rejected field!"
+        elif email == "":
             data["email"] = "Missing email!"
         elif not re.match(emailRegex, email):
             data["email"] = "Rejected email!"
 
+        if message is None:
+            data["message"] = "Rejected field!"
         if message == "":
             data["message"] = "Missing message!"
         elif len(message) > 1024:
