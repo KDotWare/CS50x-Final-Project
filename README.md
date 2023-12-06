@@ -31,7 +31,7 @@ sudo apt install sqlite3
 ```
 ### Project's environment
 ```
-pip3 install flask && pip3 install flask_session && pip3 install sqlalchemy
+pip3 install flask && pip3 install flask_session && pip3 install flask-sqlalchemy
 ```
 and then 
 ```
