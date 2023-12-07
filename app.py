@@ -64,18 +64,9 @@ def contactus():
             json["data"] = data
             return jsonify(json)
 
-        conn = sqlite3.connect("development.db")
-        cur = conn.cursor()
-        cur.execute("BEGIN")
-        data = (fullname, email, message, datetime.datetime.now())
-        try:
-            cur.execute("INSERT INTO contactus (fullname, email, message, createddate) VALUES (?, ?, ?, ?)", data)
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            return jsonify(json)
-
-        conn.close()
+        data = ContactUs(full_name=fullname, email=email, message=message, created_date=datetime.datetime.now())
+        db.session.add(data)
+        db.session.commit()
 
         json["status"] = 200
         json["message"] = "Thank you for reaching out! Your message has been successfully received. Our team will review it and get back to you as soon as possible."
