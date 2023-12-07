@@ -17,7 +17,7 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
 
 ## Installation
 > [!IMPORTANT]
-> This project is developed on a Linux environment, ubuntu distro.
+> This project is developed on a Linux environment, Ubuntu distro.
 
 First ensure that you're up to date.
 ```
@@ -27,7 +27,7 @@ after that, install python3 and python3's package manager.
 ```
 sudo apt install python3 && sudo apt install python3-pip
 ```
-project's database.
+***(Optional)*** project's database.
 ```
 sudo apt install sqlite3
 ```
