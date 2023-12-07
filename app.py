@@ -41,7 +41,7 @@ def contactus():
             data["fullname"] = "Rejected field!"
         elif fullname == "":
             data["fullname"] = "Missing full name!"
-        elif len(fullname) > 50:
+        elif len(fullname) > 60:
             data["fullname"] = "Full name too long!"
 
         if email is None:
