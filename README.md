@@ -10,7 +10,7 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
 - Database Interaction:
   - Object-relational mapping
 - Data Interchange:
-  - Front-to-End ***application/x-www-form-urlencoded*** -> ***application/json***, Vice versa
+  - Front-to-End ***x-www-form-urlencoded*** -> ***json***, Vice versa ***json*** -> ***json***
 - Security:
   - hash user's plaintext, method=sha?
 
