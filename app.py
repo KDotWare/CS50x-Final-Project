@@ -82,6 +82,7 @@ def register():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
+            - Prevent registration spam
         """
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
