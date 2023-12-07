@@ -7,6 +7,7 @@
 from flask import Flask, render_template, request, redirect, jsonify
 from werkzeug.security import generate_password_hash
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import select
 from model import *
 import re
 import datetime
@@ -81,7 +82,6 @@ def register():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - validate if email already exist
         """
         firstname = request.form.get("firstname")
         lastname = request.form.get("lastname")
@@ -112,6 +112,8 @@ def register():
             data["email"] = "Missing email!"
         elif not re.match(emailRegex, email):
             data["email"] = "Invalid email!"
+        elif db.session.execute(select(User).filter_by(email=email)).one_or_none():
+            data["email"] = "Uh-oh! This email has already been registered."
 
         if password is None:
             data["password"] = "Rejected field!"
@@ -135,16 +137,9 @@ def register():
             json["data"] = data
             return jsonify(json)
 
-        conn = sqlite3.connect("development.db")
-        cur = conn.cursor()
-        cur.execute("BEGIN")
-        data = (firstname, lastname, email, generate_password_hash(password, "pbkdf2:sha256"), datetime.datetime.now())
-        try:
-            cur.execute("INSERT INTO user (firstname, lastname, email, password, registereddate) VALUES (?, ?, ?, ?, ?)", data)
-            conn.commit()
-        except Exception as e:
-            conn.rollback()
-            return jsonify(json)
+        data = User(first_name=firstname, last_name=lastname, email=email, password=generate_password_hash(password, "pbkdf2:sha256"), registered_date=datetime.datetime.now())
+        db.session.add(data)
+        db.session.commit()
 
         json["status"] = 200
         json["message"] = "You're successfully registered!"
