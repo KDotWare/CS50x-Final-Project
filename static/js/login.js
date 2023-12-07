@@ -22,12 +22,13 @@ password.addEventListener("input", function(event)
 {
     if (event.target.value != "")
     {
-        FieldError("password", "", "none");
+        FieldError("email", "", "none");
     }
 });
 
 submit.addEventListener("click", function()
 {
+    FieldError("email", "", "none");
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function()
