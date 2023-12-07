@@ -50,7 +50,7 @@ def contactus():
         elif email == "":
             data["email"] = "Missing email!"
         elif not re.match(emailRegex, email):
-            data["email"] = "Rejected email!"
+            data["email"] = "Email address!"
 
         if message is None:
             data["message"] = "Rejected field!"
