@@ -5,7 +5,7 @@
 """
 
 from flask import Flask, render_template, request, redirect, jsonify
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from model import *
@@ -155,8 +155,6 @@ def login():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
-            - validate if email not exist
-            - insert to database
         """
         email = request.form.get("email")
         password = request.form.get("password")
@@ -165,18 +163,24 @@ def login():
         data = {}
 
         if email is None:
-            data["email"] = "Rejected field!"
+            data["email"] = "The email or password you entered is incorrect!"
         elif email == "":
-            data["email"] = "Missing email!"
+            data["email"] = "The email or password you entered is incorrect!"
         elif not re.match(emailRegex, email):
-            data["email"] = "Invalid email!"
+            data["email"] = "The email or password you entered is incorrect!"
 
         if password is None:
-            data["password"] = "Rejected field!"
+            data["email"] = "The email or password you entered is incorrect!"
         elif password == "":
-            data["password"] = "Missing password!"
+            data["email"] = "The email or password you entered is incorrect!"
         elif len(password) > 30:
-            data["password"] = "Password too long!"
+            data["email"] = "The email or password you entered is incorrect!"
+
+        if not data:
+            result = db.session.execute(select(User).filter_by(email=email)).one_or_none()
+
+            if result is None or not check_password_hash(result[0].password, password):
+                data["email"] = "The email or password you entered is incorrect!"
 
         if data:
             json["status"] = 400
