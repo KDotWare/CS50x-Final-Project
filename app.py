@@ -112,7 +112,7 @@ def register():
         elif email == "":
             data["email"] = "Missing email!"
         elif not re.match(emailRegex, email):
-            data["email"] = "Invalid email!"
+            data["email"] = "Email address!"
         elif db.session.execute(select(User).filter_by(email=email)).one_or_none():
             data["email"] = "Uh-oh! This email has already been registered."
 
