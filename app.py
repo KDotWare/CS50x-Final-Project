@@ -155,6 +155,8 @@ def login():
     if request.method == "POST" and request.content_type == formContentType:
         """
             Todo's:
+            - Add session if user login successfully
+            - Prevent login spam
         """
         email = request.form.get("email")
         password = request.form.get("password")
