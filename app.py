@@ -6,11 +6,15 @@
 
 from flask import Flask, render_template, request, redirect, jsonify
 from werkzeug.security import generate_password_hash
+from flask_sqlalchemy import SQLAlchemy
+from model import *
 import re
-import sqlite3
 import datetime
 
 app = Flask(__name__)
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
+
+db = SQLAlchemy(app, model_class=Base)
 
 emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 formContentType = "application/x-www-form-urlencoded"
