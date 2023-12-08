@@ -40,8 +40,8 @@ class Product(Base):
     description = Column("description", Text, nullable=True)
     availability = Column("availability", Boolean, nullable=False) # False = single item; True = in stock
 
-class ProductImages(Base):
-    __tablename__ = "productimages"
+class ProductImage(Base):
+    __tablename__ = "productimage"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
     product = Column("product", Integer, ForeignKey("product.id"))
