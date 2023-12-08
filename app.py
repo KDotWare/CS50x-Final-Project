@@ -84,28 +84,12 @@ def register():
             Todo's:
             - Prevent registration spam
         """
-        firstname = request.form.get("firstname")
-        lastname = request.form.get("lastname")
         email = request.form.get("email")
         password = request.form.get("password")
         repassword = request.form.get("repassword")
 
         json = {}
         data = {}
-
-        if firstname is None:
-            data["firstname"] = "Rejected field!"
-        elif firstname == "":
-            data["firstname"] = "Missing first name!"
-        elif len(firstname) > 30:
-            data["firstname"] = "First name too long!"
-
-        if lastname is None:
-            data["lastname"] = "Rejected field!"
-        elif lastname == "":
-            data["lastname"] = "Missing last name!"
-        elif len(lastname) > 30:
-            data["lastname"] = "Last name too long!"
 
         if email is None:
             data["email"] = "Rejected field!"
@@ -138,8 +122,10 @@ def register():
             json["data"] = data
             return jsonify(json)
 
-        data = User(first_name=firstname, last_name=lastname, email=email, password=generate_password_hash(password, "pbkdf2:sha256"), registered_date=datetime.datetime.now())
+        user = User(email=email, password=generate_password_hash(password, "pbkdf2:sha256"), email_verified=False, is_user_ext=False, registered_date=datetime.datetime.now())
+        userExt = UserExt(user=user.id, first_name="", middle_name="", last_name="", gender="", birth_year=datetime.date(1899, 12, 31))
         db.session.add(data)
+        db.session.add(userExt)
         db.session.commit()
 
         json["status"] = 200

@@ -13,22 +13,6 @@ function FieldError(field, message, display)
     element.style.display = display;
 }
 
-firstname.addEventListener("input", function(event)
-{
-    if (event.target.value != "")
-    {
-        FieldError("firstname", "", "none");
-    }
-});
-
-lastname.addEventListener("input", function(event)
-{
-    if (event.target.value != "")
-    {
-        FieldError("lastname", "", "none");
-    }
-});
-
 email.addEventListener("input", function(event)
 {
     if (event.target.value != "")
@@ -79,9 +63,7 @@ submit.addEventListener("click", function()
     xhr.open("POST", "/register", true);
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-    let params = firstname.getAttribute("name") + "=" + firstname.value + "&"
-                + lastname.getAttribute("name") + "=" + lastname.value + "&"
-                + email.getAttribute("name") + "=" + email.value + "&"
+    let params = email.getAttribute("name") + "=" + email.value + "&"
                 + password.getAttribute("name") + "=" + password.value + "&"
                 + repassword.getAttribute("name") + "=" + repassword.value;
 

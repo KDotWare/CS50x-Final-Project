@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, Float, String, Text, DateTime, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, Float, String, Text, DateTime, Date, Boolean, ForeignKey
 
 class Base(DeclarativeBase):
     pass
@@ -17,11 +17,22 @@ class User(Base):
     __tablename__ = "user"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
-    first_name = Column("first_name", String(30), nullable=False)
-    last_name = Column("last_name", String(30), nullable=False)
-    email = Column("email", String(256), nullable=False)
+    email = Column("email", String(256), nullable=False, unique=True)
     password = Column("password", Text, nullable=False)
+    email_verified = Column("email_verified", Boolean, nullable=False)
+    is_user_ext = Column("is_user_ext", Boolean, nullable=False) # False = userext is not setup, True = userext is setup
     registered_date = Column("registered_date", DateTime, nullable=False)
+
+class UserExt(Base):
+    __tablename__ = "userext"
+
+    id = Column("id", Integer, autoincrement=True, primary_key=True)
+    user = Column("user", Integer, ForeignKey("user.id"))
+    first_name = Column("first_name", String(30), nullable=False)
+    middle_name = Column("middle_name", String(30), nullable=False)
+    last_name = Column("last_name", String(30), nullable=False)
+    gender = Column("gender", String(15), nullable=False)
+    birth_year = Column("birth_year", Date, nullable=False)
 
 class Category(Base):
     __tablename__ = "category"
