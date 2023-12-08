@@ -22,3 +22,10 @@ class User(Base):
     email = Column("email", String(256), nullable=False)
     password = Column("password", Text, nullable=False)
     registered_date = Column("registered_date", DateTime, nullable=False)
+
+class Category(Base):
+    __tablename__ = "category"
+
+    id = Column("id", Integer, autoincrement=True, primary_key=True)
+    name = Column("name", String(30), nullable=False, unique=True)
+    description = Column("description", String(512), nullable=False)
