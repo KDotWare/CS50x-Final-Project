@@ -1,5 +1,5 @@
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, Integer, String, Text, DateTime
+from sqlalchemy import Column, Integer, Float, String, Text, DateTime, Boolean, ForeignKey
 
 class Base(DeclarativeBase):
     pass
@@ -29,3 +29,20 @@ class Category(Base):
     id = Column("id", Integer, autoincrement=True, primary_key=True)
     name = Column("name", String(30), nullable=False, unique=True)
     description = Column("description", String(512), nullable=False)
+
+class Product(Base):
+    __tablename__ = "product"
+
+    id = Column("id", Integer, autoincrement=True, primary_key=True)
+    title = Column("title", String(100), nullable=False)
+    price = Column("price", Float(18, 2), nullable=False)
+    category = Column("category", Integer, ForeignKey("category.id"))
+    description = Column("description", Text, nullable=True)
+    availability = Column("availability", Boolean, nullable=False) # False = single item; True = in stock
+
+class ProductImages(Base):
+    __tablename__ = "productimages"
+
+    id = Column("id", Integer, autoincrement=True, primary_key=True)
+    product = Column("product", Integer, ForeignKey("product.id"))
+    file_name = Column("file_name", Text, nullable=False)
