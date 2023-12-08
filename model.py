@@ -27,7 +27,7 @@ class UserExt(Base):
     __tablename__ = "userext"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
-    user = Column("user", Integer, ForeignKey("user.id"))
+    user = Column("user", Integer, ForeignKey("user.id"), nullable=False)
     first_name = Column("first_name", String(30), nullable=False)
     middle_name = Column("middle_name", String(30), nullable=False)
     last_name = Column("last_name", String(30), nullable=False)
@@ -47,7 +47,7 @@ class Product(Base):
     id = Column("id", Integer, autoincrement=True, primary_key=True)
     title = Column("title", String(100), nullable=False)
     price = Column("price", Float(18, 2), nullable=False)
-    category = Column("category", Integer, ForeignKey("category.id"))
+    category = Column("category", Integer, ForeignKey("category.id"), nullable=False)
     description = Column("description", Text, nullable=True)
     availability = Column("availability", Boolean, nullable=False) # False = single item; True = in stock
 
@@ -55,5 +55,5 @@ class ProductImage(Base):
     __tablename__ = "productimage"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
-    product = Column("product", Integer, ForeignKey("product.id"))
+    product = Column("product", Integer, ForeignKey("product.id"), nullable=False)
     file_name = Column("file_name", Text, nullable=False)
