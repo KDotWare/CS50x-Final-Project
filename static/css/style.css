@@ -44,6 +44,38 @@ nav {
     display: none;
 }
 
+.dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+.dropdown-content {
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+    top: 2.5em;
+    right : -.5em;
+    display: none;
+    overflow: hidden;
+    position: absolute;
+    background-color: #1aa644;
+    border: 1px solid #ffffff;
+}
+
+.dropdown-content li:hover {
+    background-color: #0d5923;
+}
+
+.dropdown-content li a {
+    margin: 0 .3em 0 .3em;
+    padding: 0 0 .3em 0;
+    width: 8em;
+}
+
+.dropdown:focus-within .dropdown-content {
+    display: block;
+}
+
 .banner {
     margin: 0;
     padding: 0;
@@ -159,5 +191,9 @@ footer a {
     .navulliNotifSpan {
         display: inline;
         visibility: visible;
+    }
+
+    .dropdown-content {
+        right : -5em
     }
 }
