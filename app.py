@@ -4,8 +4,9 @@
     - parameter setup database key is -sdb and value is [databasename]
 """
 
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from model import *
@@ -13,9 +14,13 @@ import re
 import datetime
 
 app = Flask(__name__)
+app.secret_key = "debug>.<q!w@e#r$t%y^"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
+app.config["SESSION_PERMANENT"] = False
+app.config["SESSION_TYPE"] = "filesystem"
 
 db = SQLAlchemy(app, model_class=Base)
+Session(app)
 
 emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 formContentType = "application/x-www-form-urlencoded"
@@ -165,6 +170,8 @@ def login():
         elif len(password) > 30:
             data["email"] = "The email or password you entered is incorrect!"
 
+        result = ()
+
         if not data:
             result = db.session.execute(select(User).filter_by(email=email)).one_or_none()
 
@@ -176,6 +183,8 @@ def login():
             json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
             json["data"] = data
             return jsonify(json)
+
+        session["user_id"] = result[0].id
 
         json["status"] = 200
         json["message"] = "You're successfully login!"
