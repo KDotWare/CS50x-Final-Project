@@ -46,4 +46,4 @@ git clone
   - javascript
 - Back-end:
   - Python flask
-  - sqlite3 database
+  - sqlite3 database ***(Optional you can choose your own)***
