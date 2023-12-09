@@ -186,9 +186,10 @@ def login():
 
         session["user_id"] = result[0].id
 
-        json["status"] = 200
+        json["status"] = 302
         json["message"] = "You're successfully login!"
-        json["data"] = data
+        json["location"] = "/"
+
         return jsonify(json)
     else:
         return render_template("auth/login.html")

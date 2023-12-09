@@ -43,10 +43,10 @@ submit.addEventListener("click", function()
                 {
                     FieldError(key, apiResponse.data[key], "block");
                 }
-            } else if (apiResponse.status == 200)
+            } else if (apiResponse.status == 302)
             {
                 window.alert(apiResponse.message);
-                window.location.replace("/")
+                window.location.replace(apiResponse.location)
             }
         }
     }
