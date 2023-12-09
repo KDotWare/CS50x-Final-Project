@@ -28,6 +28,13 @@ nav {
     color: #ffffff;
 }
 
+.navul li img {
+    margin: 0;
+    padding: 0;
+    width: 1.5em;
+    cursor: pointer;
+}
+
 .banner {
     margin: 0;
     padding: 0;

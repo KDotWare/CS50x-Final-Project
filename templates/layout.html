@@ -29,8 +29,16 @@
                 </form>
                 <ul class="navul navbar-nav">
                     {% if session["user_id"] %}
-                        <li class="nav-item fs-5"><a href="">Messages</a></li>
-                        <li class="nav-item fs-5"><a href="">Me</a></li>
+                        <li>
+                            <img src="https://i.ibb.co/Jr7WNtt/bell.png">
+                            <img src="https://i.ibb.co/G7M6SpS/notification.png">
+                        </li>
+                        <li class="nav-item fs-5">
+                            <a href="#"><img src="https://i.ibb.co/vJZxjz3/typing.png"></a>
+                        </li>
+                        <li class="nav-item fs-5">
+                            <img src="https://i.ibb.co/jfB6fJ1/user.png">
+                        </li>
                     {% else %}
                         <li class="nav-item fs-5"><a href="/register">Register</a></li>
                         <li class="nav-item fs-5"><a href="/login">Login</a></li>
