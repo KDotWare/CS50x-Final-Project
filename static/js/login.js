@@ -46,6 +46,7 @@ submit.addEventListener("click", function()
             } else if (apiResponse.status == 200)
             {
                 window.alert(apiResponse.message);
+                window.location.replace("/")
             }
         }
     }
