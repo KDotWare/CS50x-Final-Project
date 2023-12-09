@@ -19,6 +19,8 @@ nav {
 
 .navul li {
     padding: .5em;
+    display: flex;
+    flex-direction: row;
 }
 
 .navul li a {
@@ -29,10 +31,17 @@ nav {
 }
 
 .navul li img {
-    margin: 0;
+    margin: 0 auto 0 auto;
     padding: 0;
     width: 1.5em;
-    cursor: pointer;
+}
+
+.navul li div span {
+    margin-left: 1em;
+}
+
+.navulliNotifSpan {
+    display: none;
 }
 
 .banner {
@@ -145,5 +154,10 @@ footer a {
     .contactusImg {
         margin: 0 auto 0 auto;
         width: 30%;
+    }
+
+    .navulliNotifSpan {
+        display: inline;
+        visibility: visible;
     }
 }
