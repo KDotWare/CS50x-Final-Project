@@ -194,6 +194,13 @@ def login():
     else:
         return render_template("auth/login.html")
 
+@app.route("/logout", methods=["GET"])
+def logout():
+    if "user_id" in session:
+        session.clear()
+
+    return redirect("/")
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
