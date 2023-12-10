@@ -201,6 +201,10 @@ def logout():
 
     return redirect("/")
 
+@app.route("/me/account", methods=["GET"])
+def account():
+    return render_template("me/account.html")
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
