@@ -234,4 +234,8 @@ footer a {
     .dropdown-content {
         right : -5em
     }
+
+    .acc {
+        flex-direction: column;
+    }
 }
