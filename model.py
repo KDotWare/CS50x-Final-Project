@@ -32,7 +32,7 @@ class UserExt(Base):
     middle_name = Column("middle_name", String(30), nullable=False)
     last_name = Column("last_name", String(30), nullable=False)
     gender = Column("gender", String(15), nullable=False)
-    birth_year = Column("birth_year", Date, nullable=False)
+    birth = Column("birth", Date, nullable=False)
 
 class Category(Base):
     __tablename__ = "category"

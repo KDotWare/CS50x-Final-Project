@@ -130,7 +130,7 @@ def register():
         user = User(email=email, password=generate_password_hash(password, "pbkdf2:sha256"), email_verified=False, is_user_ext=False, registered_date=datetime.datetime.now())
         db.session.add(user)
         db.session.flush()
-        userExt = UserExt(user=user.id, first_name="", middle_name="", last_name="", gender="", birth_year=datetime.date(1899, 12, 31))
+        userExt = UserExt(user=user.id, first_name="", middle_name="", last_name="", gender="", birth=datetime.date(1899, 12, 31))
         db.session.add(userExt)
         db.session.commit()
 
