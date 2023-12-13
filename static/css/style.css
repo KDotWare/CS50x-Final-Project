@@ -171,6 +171,44 @@ footer a {
 .registerForm h2 {
     font-size: 4em;
 }
+
+.accTitle {
+    margin: 1em 0 1em 0;
+    text-align: center;
+}
+
+.acc {
+    margin: 1em 0 1em 0;
+    display: flex;
+    flex-direction: row;
+    background-color: #1aa644;
+    color: #ffffff;
+}
+
+.acc ul {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    list-style-type: none;
+    background-color: #0d5923;
+}
+
+.acc ul li {
+    margin: 0;
+    padding: 1em;
+    cursor: pointer;
+    text-align: center;
+}
+
+.acc ul li a {
+    display: inline-block;
+    width: 15em;
+}
+
+.tabContent {
+    padding: 5em;
+    width: 100%;
+}
  
  /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (max-width: 992px) {

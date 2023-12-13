@@ -5,4 +5,72 @@
 {% endblock %}
 
 {% block main %}
+    <h2 class="accTitle">Account Settings</h2>
+    <div class="acc container">
+        <div>
+            <ul>
+                <li><a>User Information</a></li>
+                <li><a>Account</a></li>
+            </ul>
+        </div>
+        <div class="tabContent" style="display: block;">
+            <form class="formArea" method="POST" style="padding: 0;">
+                <div class="fullnameAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
+                <label class="form-label">Full name:</label>
+                <div class="input-group mb-3">
+                    <input class="form-control" type="text" name="firstname" placeholder="Enter First Name" required>
+                    <input class="form-control" type="text" name="middlename" placeholder="Enter Middle Name" required>
+                    <input class="form-control" type="text" name="lastname" placeholder="Enter Last Name" required>
+                </div>
+                <div class="mb-4">
+                    <label for="gender" class="form-label">Gender:</label>
+                    <div class="genderAlert alert alert-danger" style="display: none;">
+                        <strong>Invalid!</strong> <span></span>
+                    </div>
+                    <select class="form-select form-select-sm" name="gender">
+                        <option value="" selected>Choose Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Non-binary">Non-binary</option>
+                      </select>
+                </div>
+                <div class="mb-4">
+                    <label for="birth" class="form-label">Birthday:</label>
+                    <div class="birthAlert alert alert-danger" style="display: none;">
+                        <strong>Invalid!</strong> <span></span>
+                    </div>
+                    <input class="form-control" type="date" name="birth" placeholder="Enter email" required>
+                </div>
+                <input class="btn" name="submit" type="submit" value="Update">
+            </form>
+        </div>
+        <div class="tabContent">
+            <form class="formArea" style="padding: 0;">
+                <div class="mb-4">
+                    <label for="email" class="form-label">Email:</label>
+                    <div class="birthAlert alert alert-danger" style="display: none;">
+                        <strong>Invalid!</strong> <span></span>
+                    </div>
+                    <input class="form-control" type="email" name="email" placeholder="Enter email" required>
+                </div>
+                <input class="btn" name="submit" type="submit" value="Update">
+            </form>
+            <form class="formArea" style="padding: 0;">
+                <div class="birthAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password:</label>
+                    <input class="form-control" type="password" name="password" placeholder="Enter email" required>
+                </div>
+                <div class="input-group mb-3">
+                    <input class="form-control" type="password" name="newpassword" placeholder="Enter New Password" required>
+                    <input class="form-control" type="password" name="newrepassword" placeholder="Confirm New Password" required>
+                </div>
+                <input class="btn" name="submit" type="submit" value="Update">
+            </form>
+        </div>
+    </div>
 {% endblock %}
