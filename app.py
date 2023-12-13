@@ -9,9 +9,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
+from functools import wraps
 from model import *
 import re
 import datetime
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/")
+        return f(*args, **kwargs)
+    return decorated_function
 
 app = Flask(__name__)
 app.secret_key = "debug>.<q!w@e#r$t%y^"
@@ -195,6 +204,7 @@ def login():
         return render_template("auth/login.html")
 
 @app.route("/logout", methods=["GET"])
+@login_required
 def logout():
     if "user_id" in session:
         session.clear()
@@ -202,6 +212,7 @@ def logout():
     return redirect("/")
 
 @app.route("/me/account", methods=["GET"])
+@login_required
 def account():
     return render_template("me/account.html")
 
