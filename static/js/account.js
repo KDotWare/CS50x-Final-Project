@@ -33,7 +33,6 @@ menuLi[0].click();
 function FieldError(field, message, display)
 {
     field = "." + field + "Alert";
-    console.log(field + " ASD");
     let element = document.querySelector(field);
     element.getElementsByTagName("span")[0].innerHTML = message;
     element.style.display = display;
