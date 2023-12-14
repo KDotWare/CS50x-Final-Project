@@ -33,16 +33,16 @@ menuLi[0].click();
 function FieldError(field, message, display)
 {
     field = "." + field + "Alert";
+    console.log(field + " ASD");
     let element = document.querySelector(field);
     element.getElementsByTagName("span")[0].innerHTML = message;
     element.style.display = display;
 }
 
 // Input events
-let alertIndex = 0;
-for (let form of forms)
+for (let i = 0, len = forms.length; i < len; i++)
 {
-    for (let input of form.elements)
+    for (let input of forms[i].elements)
     {
         if (input.getAttribute("name") == "submit")
         {
@@ -51,16 +51,14 @@ for (let form of forms)
 
         input.addEventListener("input", function(event)
         {
-            const index = alertIndex;
+            const formError = fieldsAlertName[i];
 
             if (event.target.value != "")
             {
-                FieldError(fieldsAlertName[index], "", "none");
+                FieldError(formError, "", "none");
             }
         });
     }
-
-    alertIndex++;
 }
 
 // Each form events
