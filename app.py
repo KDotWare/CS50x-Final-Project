@@ -68,7 +68,7 @@ def contactus():
 
         if message is None:
             data["message"] = "Rejected field!"
-        if message == "":
+        elif message == "":
             data["message"] = "Missing message!"
         elif len(message) > 1024:
             data["message"] = "Message too long!"
