@@ -19,6 +19,7 @@
                     <strong>Invalid!</strong> <span></span>
                 </div>
                 <label class="form-label">Full name:</label>
+                <input type="hidden" name="action" value="0">
                 <div class="input-group mb-3">
                     <input class="form-control" type="text" name="firstname" placeholder="Enter First Name" required>
                     <input class="form-control" type="text" name="middlename" placeholder="Enter Middle Name" required>
@@ -48,6 +49,7 @@
         </div>
         <div class="tabContent" style="display: none;">
             <form class="formArea" style="padding: 0;">
+                <input type="hidden" name="action" value="1">
                 <div class="mb-4">
                     <label for="email" class="form-label">Email:</label>
                     <div class="birthAlert alert alert-danger" style="display: none;">
@@ -58,6 +60,7 @@
                 <input class="btn" name="submit" type="submit" value="Update">
             </form>
             <form class="formArea" style="padding: 0;">
+                <input type="hidden" name="action" value="2">
                 <div class="birthAlert alert alert-danger" style="display: none;">
                     <strong>Invalid!</strong> <span></span>
                 </div>
