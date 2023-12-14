@@ -297,7 +297,10 @@ def account():
         return jsonify(json)
 
     else:
-        return render_template("me/account.html")
+        userext = db.session.execute(select(UserExt).filter_by(user=session["user_id"])).one_or_none()
+        userext = userext[0]
+
+        return render_template("me/account.html", userext=userext)
 
 if __name__ == "__main__":
     with app.app_context():

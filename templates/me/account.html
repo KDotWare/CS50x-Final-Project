@@ -21,22 +21,41 @@
                 <label class="form-label">Full name:</label>
                 <input type="hidden" name="action" value="0">
                 <div class="input-group mb-3">
-                    <input class="form-control" type="text" name="firstname" placeholder="Enter First Name" required>
-                    <input class="form-control" type="text" name="middlename" placeholder="Enter Middle Name" required>
-                    <input class="form-control" type="text" name="lastname" placeholder="Enter Last Name" required>
+                    <input class="form-control" type="text" name="firstname" placeholder="Enter First Name" value="{{ userext['first_name'] }}" required>
+                    <input class="form-control" type="text" name="middlename" placeholder="Enter Middle Name" value="{{ userext['middle_name'] }}">
+                    <input class="form-control" type="text" name="lastname" placeholder="Enter Last Name" value="{{ userext['last_name'] }}" required>
                 </div>
                 <div class="mb-4">
                     <label for="gender" class="form-label">Gender:</label>
                     <select class="form-select form-select-sm" name="gender">
-                        <option value="" selected>Choose Gender</option>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Non-binary">Non-binary</option>
+                        {% if userext['gender'] == "" %}
+                            <option value="" selected>Choose Gender</option>
+                        {% else %}
+                            <option value="">Choose Gender</option>
+                        {% endif %}
+
+                        {% if userext['gender'] == "Male" %}
+                            <option value="Male" selected>Male</option>
+                        {% else %}
+                            <option value="Male">Male</option>
+                        {% endif %}
+
+                        {% if userext['gender'] == "Female" %}
+                            <option value="Female" selected>Female</option>
+                        {% else %}
+                            <option value="Female">Female</option>
+                        {% endif %}
+
+                        {% if userext['gender'] == "Non-binary" %}
+                            <option value="Non-binary" selected>Non-binary</option>
+                        {% else %}
+                            <option value="Non-binary">Non-binary</option>
+                        {% endif %}
                       </select>
                 </div>
                 <div class="mb-4">
                     <label for="birth" class="form-label">Birthday:</label>
-                    <input class="form-control" type="date" name="birth" required>
+                    <input class="form-control" type="date" name="birth" value="{{ userext['birth'] }}" required>
                 </div>
                 <input class="btn" name="submit" type="submit" value="Update">
             </form>
