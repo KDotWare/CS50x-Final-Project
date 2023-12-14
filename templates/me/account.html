@@ -15,7 +15,7 @@
         </div>
         <div class="tabContent" style="display: none;">
             <form class="formArea" method="POST" style="padding: 0;">
-                <div class="fullnameAlert alert alert-danger" style="display: none;">
+                <div class="userAlert alert alert-danger" style="display: none;">
                     <strong>Invalid!</strong> <span></span>
                 </div>
                 <label class="form-label">Full name:</label>
@@ -27,9 +27,6 @@
                 </div>
                 <div class="mb-4">
                     <label for="gender" class="form-label">Gender:</label>
-                    <div class="genderAlert alert alert-danger" style="display: none;">
-                        <strong>Invalid!</strong> <span></span>
-                    </div>
                     <select class="form-select form-select-sm" name="gender">
                         <option value="" selected>Choose Gender</option>
                         <option value="Male">Male</option>
@@ -39,9 +36,6 @@
                 </div>
                 <div class="mb-4">
                     <label for="birth" class="form-label">Birthday:</label>
-                    <div class="birthAlert alert alert-danger" style="display: none;">
-                        <strong>Invalid!</strong> <span></span>
-                    </div>
                     <input class="form-control" type="date" name="birth" required>
                 </div>
                 <input class="btn" name="submit" type="submit" value="Update">
@@ -52,7 +46,7 @@
                 <input type="hidden" name="action" value="1">
                 <div class="mb-4">
                     <label for="email" class="form-label">Email:</label>
-                    <div class="birthAlert alert alert-danger" style="display: none;">
+                    <div class="emailAlert alert alert-danger" style="display: none;">
                         <strong>Invalid!</strong> <span></span>
                     </div>
                     <input class="form-control" type="email" name="email" placeholder="Enter New Email" required>
@@ -61,7 +55,7 @@
             </form>
             <form class="formArea" style="padding: 0;">
                 <input type="hidden" name="action" value="2">
-                <div class="birthAlert alert alert-danger" style="display: none;">
+                <div class="passwordAlert alert alert-danger" style="display: none;">
                     <strong>Invalid!</strong> <span></span>
                 </div>
                 <div class="mb-4">
