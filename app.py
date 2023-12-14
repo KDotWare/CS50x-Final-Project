@@ -33,6 +33,7 @@ Session(app)
 
 emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 formContentType = "application/x-www-form-urlencoded"
+Genders = ("Male", "Female", "Non-binary")
 
 @app.route("/", methods=["GET"])
 def index():
@@ -211,10 +212,92 @@ def logout():
 
     return redirect("/")
 
-@app.route("/me/account", methods=["GET"])
+def AccountUser(firstname, middlename, lastname, gender, birth):
+    data = {}
+
+    if firstname is None:
+        data["user"] = "Rejected field!"
+    elif firstname == "":
+        data["user"] = "Missing first name!"
+    elif len(firstname) > 30:
+        data["user"] = "First name too long!"
+
+    if middlename is None:
+        data["user"] = "Rejected field!"
+    elif len(middlename) > 30:
+        data["user"] = "Middle name too long!"
+
+    if lastname is None:
+        data["user"] = "Rejected field!"
+    elif lastname == "":
+        data["user"] = "Missing last name!"
+    elif len(lastname) > 30:
+        data["user"] = "Last name too long!"
+
+    if gender is None:
+        data["user"] = "Rejected field!"
+    elif gender == "":
+        data["user"] = "Missing gender!"
+    elif gender not in Genders:
+        data["user"] = "Provide your gender!"
+
+    if birth is None:
+        data["user"] = "Rejected field!"
+    else:
+        try:
+            birth = datetime.date.fromisoformat(birth)
+        except ValueError:
+            data["user"] = "Rejected field!"
+
+    if not data:
+        userext = db.session.execute(select(UserExt).filter_by(user=session["user_id"])).one_or_none()
+        userext = userext[0]
+        userext.first_name = firstname
+        userext.middle_name = middlename
+        userext.last_name = lastname
+        userext.gender = gender
+        userext.birth = birth
+        db.session.commit()
+
+    return data
+
+@app.route("/me/account", methods=["GET", "POST"])
 @login_required
 def account():
-    return render_template("me/account.html")
+    if request.method == "POST":
+        action = request.form.get("action")
+        try:
+            action = int(action)
+        except ValueError:
+            return redirect("/me/account")
+
+        json = {}
+        data = {}
+
+        if action == 0: # User Information
+            data = AccountUser(firstname = request.form.get("firstname"),
+                        middlename = request.form.get("middlename"),
+                        lastname = request.form.get("lastname"),
+                        gender = request.form.get("gender"),
+                        birth = request.form.get("birth"))
+        elif action == 1: # Email
+            pass
+        elif action == 2: # Password
+            pass
+
+        if data:
+            json["status"] = 400
+            json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
+            json["data"] = data
+            return jsonify(json)
+
+        json["status"] = 200
+        json["message"] = "User Information Updated!"
+        json["data"] = {}
+        return jsonify(json)
+
+    else:
+        return render_template("me/account.html")
 
 if __name__ == "__main__":
     with app.app_context():
