@@ -286,7 +286,27 @@ def account():
                 json["message"] = "User Information Updated!"
                 json["data"] = {}
         elif action == 1: # Email
-            pass
+            email = request.form.get("email")
+
+            if email is None:
+                data["email"] = "Rejected field!"
+            elif email == "":
+                data["email"] = "Missing email!"
+            elif not re.match(emailRegex, email):
+                data["email"] = "Email address!"
+
+            if not data:
+                user = db.session.execute(select(User).filter_by(id=session["user_id"])).one_or_none()
+                user = user[0]
+
+                if user.email == email:
+                    data["email"] = "Uh-oh! This email has not change."
+                else:
+                    user.email = email
+                    db.session.commit()
+                    json["status"] = 200
+                    json["message"] = "Email Updated!"
+                    json["data"] = {}
         elif action == 2: # Password
             pass
 
