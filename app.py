@@ -280,6 +280,11 @@ def account():
                         lastname = request.form.get("lastname"),
                         gender = request.form.get("gender"),
                         birth = request.form.get("birth"))
+
+            if not data:
+                json["status"] = 200
+                json["message"] = "User Information Updated!"
+                json["data"] = {}
         elif action == 1: # Email
             pass
         elif action == 2: # Password
@@ -291,9 +296,6 @@ def account():
             json["data"] = data
             return jsonify(json)
 
-        json["status"] = 200
-        json["message"] = "User Information Updated!"
-        json["data"] = {}
         return jsonify(json)
 
     else:
