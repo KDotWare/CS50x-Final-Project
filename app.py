@@ -33,7 +33,7 @@ Session(app)
 
 EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 FORM_CONTENT_TYPE = "application/x-www-form-urlencoded"
-Genders = ("Male", "Female", "Non-binary")
+GENDERS = ("Male", "Female", "Non-binary")
 PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
 
 @app.route("/", methods=["GET"])
@@ -239,7 +239,7 @@ def AccountUser(firstname, middlename, lastname, gender, birth):
         data["user"] = "Rejected field!"
     elif gender == "":
         data["user"] = "Missing gender!"
-    elif gender not in Genders:
+    elif gender not in GENDERS:
         data["user"] = "Provide your gender!"
 
     if birth is None:
