@@ -34,6 +34,7 @@ Session(app)
 emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 formContentType = "application/x-www-form-urlencoded"
 Genders = ("Male", "Female", "Non-binary")
+PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
 
 @app.route("/", methods=["GET"])
 def index():
@@ -308,7 +309,42 @@ def account():
                     json["message"] = "Email Updated!"
                     json["data"] = {}
         elif action == 2: # Password
-            pass
+            password = request.form.get("password")
+            newPassword = request.form.get("newpassword")
+            newRePassword = request.form.get("newrepassword")
+
+            if password is None:
+                data["password"] = "Rejected field!"
+            elif password == "":
+                data["password"] = "Missing password!"
+            elif len(password) > 30:
+                data["password"] = "Password too long!"
+
+            if newPassword is None:
+                data["password"] = "Rejected field!"
+            elif newPassword == "":
+                data["password"] = "Missing new password!"
+            elif len(newPassword) > 30:
+                data["password"] = "New password too long!"
+
+            if newRePassword is None:
+                data["password"] = "Rejected field!"
+            elif newPassword != newRePassword:
+                data["password"] = "Confirm new password not match!"
+
+            if not data:
+                user = db.session.execute(select(User).filter_by(id=session["user_id"])).one_or_none()
+                user = user[0]
+
+                if not check_password_hash(user.password, password):
+                    data["password"] = "Password incorrect!"
+                else:
+                    newPassword = generate_password_hash(newPassword, PASSWORD_ENCRYPT_METHOD)
+                    user.password = newPassword
+                    db.session.commit()
+                    json["status"] = 200
+                    json["message"] = "Password Updated!"
+                    json["data"] = {}
 
         if data:
             json["status"] = 400
