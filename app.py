@@ -32,7 +32,7 @@ db = SQLAlchemy(app, model_class=Base)
 Session(app)
 
 EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-formContentType = "application/x-www-form-urlencoded"
+FORM_CONTENT_TYPE = "application/x-www-form-urlencoded"
 Genders = ("Male", "Female", "Non-binary")
 PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
 
@@ -42,7 +42,7 @@ def index():
 
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
-    if request.method == "POST" and request.content_type == formContentType:
+    if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:
         """
             Todo's:
             - Prevent form spam 
@@ -95,7 +95,7 @@ def contactus():
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST" and request.content_type == formContentType:
+    if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:
         """
             Todo's:
             - Prevent registration spam
@@ -155,7 +155,7 @@ def register():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    if request.method == "POST" and request.content_type == formContentType:
+    if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:
         """
             Todo's:
             - Add session if user login successfully
@@ -265,7 +265,7 @@ def AccountUser(firstname, middlename, lastname, gender, birth):
 @app.route("/me/account", methods=["GET", "POST"])
 @login_required
 def account():
-    if request.method == "POST":
+    if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:
         action = request.form.get("action")
         try:
             action = int(action)
