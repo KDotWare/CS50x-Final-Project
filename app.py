@@ -31,7 +31,7 @@ app.config["SESSION_TYPE"] = "filesystem"
 db = SQLAlchemy(app, model_class=Base)
 Session(app)
 
-emailRegex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 formContentType = "application/x-www-form-urlencoded"
 Genders = ("Male", "Female", "Non-binary")
 PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
@@ -65,7 +65,7 @@ def contactus():
             data["email"] = "Rejected field!"
         elif email == "":
             data["email"] = "Missing email!"
-        elif not re.match(emailRegex, email):
+        elif not re.match(EMAIL_REGEX, email):
             data["email"] = "Email address!"
 
         if message is None:
@@ -111,7 +111,7 @@ def register():
             data["email"] = "Rejected field!"
         elif email == "":
             data["email"] = "Missing email!"
-        elif not re.match(emailRegex, email):
+        elif not re.match(EMAIL_REGEX, email):
             data["email"] = "Email address!"
         elif db.session.execute(select(User).filter_by(email=email)).one_or_none():
             data["email"] = "Uh-oh! This email has already been registered."
@@ -171,7 +171,7 @@ def login():
             data["email"] = "The email or password you entered is incorrect!"
         elif email == "":
             data["email"] = "The email or password you entered is incorrect!"
-        elif not re.match(emailRegex, email):
+        elif not re.match(EMAIL_REGEX, email):
             data["email"] = "The email or password you entered is incorrect!"
 
         if password is None:
@@ -293,7 +293,7 @@ def account():
                 data["email"] = "Rejected field!"
             elif email == "":
                 data["email"] = "Missing email!"
-            elif not re.match(emailRegex, email):
+            elif not re.match(EMAIL_REGEX, email):
                 data["email"] = "Email address!"
 
             if not data:
