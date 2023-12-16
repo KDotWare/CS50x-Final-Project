@@ -360,6 +360,11 @@ def account():
 
         return render_template("me/account.html", userext=userext)
 
+@app.route("/me/listing", methods=["GET"])
+@login_required
+def listing():
+    return render_template("/me/listing.html")
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
