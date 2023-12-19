@@ -153,7 +153,7 @@ footer a {
     padding: 10em 5em 5em 5em;
 }
 
-.formArea input[type=submit], .registerForm input[type=submit] {
+.formArea input[type=submit], .registerForm input[type=submit], .cmodalContentBtn {
     border-radius: 1em;
     background-color: #0d5923;
     color:#ffffff;
@@ -208,6 +208,38 @@ footer a {
 .tabContent {
     padding: 5em;
     width: 100%;
+}
+
+.cmodal {
+    margin: 0;
+    padding: 4em 0 0 0;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    display: none;
+    position: fixed;
+    overflow: scroll;
+    background-color: #000000;
+    background-color: rgb(0, 0, 0, .5)
+}
+
+.cmodalContent {
+    margin: 0 auto 0 auto;
+    padding: 2em;
+    width: 80%;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.cmodalContentClose {
+    margin-bottom: 2em;
+    cursor: pointer;
+}
+
+.listing {
+    min-height: 40em;
 }
  
  /* Large devices (laptops/desktops, 992px and up) */

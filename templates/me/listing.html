@@ -5,5 +5,58 @@
 {% endblock %}
 
 {% block main %}
+    <div class="container-fluid">
+        <center>
+            <button class="Add btn btn-success my-2">Add Product</button>
+            <button class="btn btn-danger my-2">Delete Product</button>
+        </center>
+    </div>
+    <div class="cmodal">
+        <div class="cmodalContent">
+            <div class="cmodalContentClose">&#x2715</div>
+            <form>
+                <input type="hidden" name="action" value="Add">
+                <div class="listingAlert alert alert-danger" style="display: none;">
+                    <strong>Invalid!</strong> <span></span>
+                </div>
+                <label class="form-label">Title:</label>
+                <div class="mb-3">
+                    <input class="form-control" type="text" name="title" placeholder="Enter Title" required>
+                </div>
+                <label class="form-label">Price:</label>
+                <div class="input-group mb-3">
+                    <input class="form-control" type="number" name="price" placeholder="Enter Price" required>
+                </div>
+                <div class="mb-4">
+                    <label for="category" class="form-label">Category:</label>
+                    <select class="form-select" name="category" required>
+                        <option value="" selected>Choose Category</option>
+                        <option value="test1">test1</option>
+                        <option value="test2">test2</option>
+                        <option value="test3">test3</option>
+                    </select>
+                </div>
+                <label class="form-label">Description:</label>
+                <div class="input-group mb-3">
+                    <textarea class="form-control" name="description" rows="5" required></textarea>
+                </div>
+                <div class="mb-4">
+                    <label for="availability" class="form-label">Availability:</label>
+                    <select class="form-select" name="availability" required>
+                        <option value="" selected>Choose Availability</option>
+                        <option value="0">Single Item</option>
+                        <option value="1">In Stock</option>
+                    </select>
+                </div>
+                <label class="form-label">Photos:</label>
+                <div class="input-group mb-3">
+                    <input class="form-control" type="file" name="images" accept="image/*" multiple required>
+                </div>
+                <input class="cmodalContentBtn" type="submit" value="Add" style="padding: .5em; width: 5em;">
+            </form>
+        </div>
+    </div>
+    <div class="listing container-fluid">
+    </div>
     <script src="{{ url_for('static', filename='js/listing.js') }}"></script>
 {% endblock %}
