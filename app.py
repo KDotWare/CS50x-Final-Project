@@ -11,9 +11,13 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
 from functools import wraps
 from model import *
+from os import getcwd
+from os.path import abspath, join
 import re
 import datetime
 
+UPLOAD_FOLDER = join(abspath(getcwd()), "upload")
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 FORM_CONTENT_TYPE = "application/x-www-form-urlencoded"
 GENDERS = ("Male", "Female", "Non-binary")
@@ -24,6 +28,7 @@ app.secret_key = "debug>.<q!w@e#r$t%y^"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 db = SQLAlchemy(app, model_class=Base)
 Session(app)
