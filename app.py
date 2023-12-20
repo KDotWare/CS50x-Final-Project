@@ -14,13 +14,10 @@ from model import *
 import re
 import datetime
 
-def login_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if session.get("user_id") is None:
-            return redirect("/")
-        return f(*args, **kwargs)
-    return decorated_function
+EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
+FORM_CONTENT_TYPE = "application/x-www-form-urlencoded"
+GENDERS = ("Male", "Female", "Non-binary")
+PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
 
 app = Flask(__name__)
 app.secret_key = "debug>.<q!w@e#r$t%y^"
@@ -31,10 +28,13 @@ app.config["SESSION_TYPE"] = "filesystem"
 db = SQLAlchemy(app, model_class=Base)
 Session(app)
 
-EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
-FORM_CONTENT_TYPE = "application/x-www-form-urlencoded"
-GENDERS = ("Male", "Female", "Non-binary")
-PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("user_id") is None:
+            return redirect("/")
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route("/", methods=["GET"])
 def index():
