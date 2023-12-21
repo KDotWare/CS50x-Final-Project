@@ -45,6 +45,7 @@ class Product(Base):
     __tablename__ = "product"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
+    user = Column("user", Integer, ForeignKey("user.id"), nullable=False)
     title = Column("title", String(100), nullable=False)
     price = Column("price", Float(18, 2), nullable=False)
     category = Column("category", Integer, ForeignKey("category.id"), nullable=False)
