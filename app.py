@@ -6,6 +6,7 @@
 
 from flask import Flask, render_template, request, redirect, jsonify, session
 from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.utils import secure_filename
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import select
@@ -40,6 +41,10 @@ def login_required(f):
             return redirect("/")
         return f(*args, **kwargs)
     return decorated_function
+
+def AllowedImageFile(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/", methods=["GET"])
 def index():
@@ -365,11 +370,104 @@ def account():
 
         return render_template("me/account.html", userext=userext)
 
-@app.route("/me/listing", methods=["GET"])
+@app.route("/me/listing", methods=["GET", "POST"])
 @login_required
 def listing():
-    categories = db.session.execute(select(Category)).fetchall()
-    return render_template("/me/listing.html", categories=categories)
+    if request.method == "POST":
+        action = request.form.get("action")
+
+        json = {}
+        data = {}
+
+        if action == "Add":
+            title = request.form.get("title")
+            price = request.form.get("price")
+            category = request.form.get("category")
+            description = request.form.get("description")
+            availability = request.form.get("availability")
+            files = ()
+
+            if title is None:
+                data["listing"] = "Rejected field!"
+            elif title == "":
+                data["listing"] = "Missing title!"
+            elif len(title) > Product.title.type.length:
+                data["listing"] = "Title too long!"
+
+            if price is None:
+                data["listing"] = "Rejected field!"
+            else:
+                try:
+                    price = Product.price.type.python_type(price)
+                except:
+                    data["listing"] = "Invalid price!"
+
+                if not data:
+                    if price <= 0:
+                        data["listing"] = "Invalid price!"
+
+            if category is None:
+                data["listing"] = "Rejected field!"
+            else:
+                category = db.session.execute(select(Category).filter_by(id=category)).one_or_none()
+
+                if category is None:
+                    data["listing"] = "Invalid category!"
+
+            if description is None:
+                data["listing"] = "Rejected field!"
+            elif len(description) <= 0:
+                data["listing"] = "Missing description!"
+
+            if availability is None:
+                data["listing"] = "Rejected field!"
+            else:
+                try:
+                    availability = int(availability)
+                    availability = Product.availability.type.python_type(availability)
+                except:
+                    data["listing"] = "Invalid availability"
+
+            if "images" not in request.files:
+                data["listing"] = "No image selected!"
+            elif len(request.files.getlist("images")) > 3:
+                    data["listing"] = "Product images limit is 3!"
+            else:
+                files = request.files.getlist("images")
+
+                for file in files:
+                    if file.filename == "":
+                        data["listing"] = "No image selected!"
+                        break
+                    elif not AllowedImageFile(file.filename):
+                        data["listing"] = "Invalid file type!"
+                        break
+
+        if data:
+            json["status"] = 400
+            json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
+            json["data"] = data
+            return jsonify(json)
+
+        product = Product(title=title, price=price, category=category[0].id, description=description, availability=availability, mark_sold=False, is_deleted=False)
+        db.session.add(product)
+        db.session.flush()
+        for file in files:
+            filename = secure_filename(file.filename)
+            filename = str(product.id) + str(datetime.datetime.now().strftime("%y%m%d%H%M%S%f")) + filename
+
+            file.save(join(join(UPLOAD_FOLDER, "imgs"), filename))
+            db.session.add(ProductImage(product=product.id, file_name=filename))
+        db.session.commit()
+
+        json["status"] = 200
+        json["message"] = "Successfully added!"
+        json["data"] = {}
+
+        return jsonify(json)
+    else:
+        categories = db.session.execute(select(Category)).fetchall()
+        return render_template("/me/listing.html", categories=categories)
 
 if __name__ == "__main__":
     with app.app_context():
