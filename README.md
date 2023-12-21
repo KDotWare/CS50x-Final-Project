@@ -4,6 +4,7 @@
 KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to buy and sell a products. Who is KaiVegan's target audience? Vegan community.
 
 > [!NOTE]
+> Considered as prototype
 > Still in development
 
 ## Features
