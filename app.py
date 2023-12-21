@@ -368,7 +368,8 @@ def account():
 @app.route("/me/listing", methods=["GET"])
 @login_required
 def listing():
-    return render_template("/me/listing.html")
+    categories = db.session.execute(select(Category)).fetchall()
+    return render_template("/me/listing.html", categories=categories)
 
 if __name__ == "__main__":
     with app.app_context():
