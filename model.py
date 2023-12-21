@@ -49,7 +49,7 @@ class Product(Base):
     price = Column("price", Float(18, 2), nullable=False)
     category = Column("category", Integer, ForeignKey("category.id"), nullable=False)
     description = Column("description", Text, nullable=True)
-    availability = Column("availability", Boolean, nullable=False) # False = single item; True = in stock
+    availability = Column("availability", Boolean, nullable=False) # True = single item; False = in stock
 
 class ProductImage(Base):
     __tablename__ = "productimage"
