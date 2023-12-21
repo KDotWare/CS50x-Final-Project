@@ -16,7 +16,7 @@ from os.path import abspath, join
 import re
 import datetime
 
-UPLOAD_FOLDER = join(abspath(getcwd()), "upload")
+UPLOAD_FOLDER = join(abspath(getcwd()), "uploads")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 FORM_CONTENT_TYPE = "application/x-www-form-urlencoded"
