@@ -48,8 +48,10 @@ class Product(Base):
     title = Column("title", String(100), nullable=False)
     price = Column("price", Float(18, 2), nullable=False)
     category = Column("category", Integer, ForeignKey("category.id"), nullable=False)
-    description = Column("description", Text, nullable=True)
+    description = Column("description", Text, nullable=False)
     availability = Column("availability", Boolean, nullable=False) # False = single item; True = in stock
+    mark_sold = Column("mark_sold", Boolean, nullable=False)
+    is_deleted = Column("is_deleted", Boolean, nullable=False)
 
 class ProductImage(Base):
     __tablename__ = "productimage"
