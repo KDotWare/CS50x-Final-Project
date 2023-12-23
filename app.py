@@ -5,7 +5,7 @@
     - on run ignored directories
 """
 
-from flask import Flask, render_template, request, redirect, jsonify, session
+from flask import Flask, render_template, request, redirect, jsonify, session, send_from_directory
 from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_session import Session
@@ -469,6 +469,10 @@ def listing():
     else:
         categories = db.session.execute(select(Category)).fetchall()
         return render_template("/me/listing.html", categories=categories)
+
+@app.route("/uploads/<path:filename>")
+def uploads(filename):
+    return send_from_directory(UPLOAD_FOLDER, filename)
 
 if __name__ == "__main__":
     with app.app_context():
