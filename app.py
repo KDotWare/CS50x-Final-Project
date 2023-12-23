@@ -1,7 +1,8 @@
 """
     Todo's:
     - create execution parameter
-    - parameter setup database key is -sdb and value is [databasename]
+    - run parameter setup database key is -sdb and value is [databasename]
+    - on run ignored directories
 """
 
 from flask import Flask, render_template, request, redirect, jsonify, session
