@@ -450,7 +450,7 @@ def listing():
             json["data"] = data
             return jsonify(json)
 
-        product = Product(title=title, price=price, category=category[0].id, description=description, availability=availability, mark_sold=False, is_deleted=False)
+        product = Product(user=session["user_id"], title=title, price=price, category=category[0].id, description=description, availability=availability, mark_sold=False, is_deleted=False)
         db.session.add(product)
         db.session.flush()
         for file in files:
