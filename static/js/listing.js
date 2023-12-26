@@ -130,12 +130,18 @@ deletebtn.addEventListener("click", function()
         if (xhr.readyState == 4 && xhr.status == 200)
         {
             let apiResponse = JSON.parse(xhr.responseText);
-            window.alert(apiResponse.message);
+
+            if (apiResponse.status == 400)
+            {
+                window.alert(apiResponse.data["message"]);
+            } else if (apiResponse.status == 200)
+            {
+                window.alert(apiResponse.message);
+                window.location.reload();
+            }
         }
     }
 
     xhr.open("POST", "/me/listing", true);
     xhr.send(toDeleteParams);
-
-    window.location.reload();
 });
