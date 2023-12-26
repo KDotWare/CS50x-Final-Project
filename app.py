@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select
+from sqlalchemy import select, join
 from functools import wraps
 from model import *
 from os import getcwd
@@ -468,7 +468,12 @@ def listing():
         return jsonify(json)
     else:
         categories = db.session.execute(select(Category)).fetchall()
-        return render_template("/me/listing.html", categories=categories)
+        products = db.session.execute(select(Product, ProductImage).
+                                        where(Product.user == session["user_id"]).
+                                        group_by(ProductImage.product).
+                                        join(ProductImage, Product.id == ProductImage.product)).fetchall()
+
+        return render_template("/me/listing.html", categories=categories, products=products)
 
 @app.route("/uploads/<path:filename>")
 def uploads(filename):
