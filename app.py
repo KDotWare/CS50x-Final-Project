@@ -24,6 +24,7 @@ EMAIL_REGEX = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,7}\b'
 FORM_CONTENT_TYPE = "application/x-www-form-urlencoded"
 GENDERS = ("Male", "Female", "Non-binary")
 PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
+PASSWORD_LENGTH_ALLOWED = 30
 
 app = Flask(__name__)
 app.secret_key = "debug>.<q!w@e#r$t%y^"
@@ -79,13 +80,15 @@ def contactus():
             data["fullname"] = "Rejected field!"
         elif fullname == "":
             data["fullname"] = "Missing full name!"
-        elif len(fullname) > 60:
+        elif len(fullname) > ContactUs.full_name.type.length:
             data["fullname"] = "Full name too long!"
 
         if email is None:
             data["email"] = "Rejected field!"
         elif email == "":
             data["email"] = "Missing email!"
+        elif len(email) > ContactUs.email.type.length:
+            data["email"] = "Email too long!"
         elif not re.match(EMAIL_REGEX, email):
             data["email"] = "Email address!"
 
@@ -93,7 +96,7 @@ def contactus():
             data["message"] = "Rejected field!"
         elif message == "":
             data["message"] = "Missing message!"
-        elif len(message) > 1024:
+        elif len(message) > ContactUs.message.type.length:
             data["message"] = "Message too long!"
 
         if data:
@@ -132,6 +135,8 @@ def register():
             data["email"] = "Rejected field!"
         elif email == "":
             data["email"] = "Missing email!"
+        elif len(email) > User.email.type.length:
+            data["email"] = "Email too long!"
         elif not re.match(EMAIL_REGEX, email):
             data["email"] = "Email address!"
         elif db.session.execute(select(User).filter_by(email=email)).one_or_none():
@@ -141,14 +146,14 @@ def register():
             data["password"] = "Rejected field!"
         elif password == "":
             data["password"] = "Missing password!"
-        elif len(password) > 30:
+        elif len(password) > PASSWORD_LENGTH_ALLOWED:
             data["password"] = "Password too long!"
 
         if repassword is None:
             data["repassword"] = "Rejected field!"
         elif repassword == "":
             data["repassword"] = "Missing confirm password!"
-        elif len(repassword) > 30:
+        elif len(repassword) > PASSWORD_LENGTH_ALLOWED:
             data["repassword"] = "Confirm password too long!"
         elif repassword != password:
             data["repassword"] = "Confirm password not match!"
@@ -188,18 +193,10 @@ def login():
         json = {}
         data = {}
 
-        if email is None:
-            data["email"] = "The email or password you entered is incorrect!"
-        elif email == "":
-            data["email"] = "The email or password you entered is incorrect!"
-        elif not re.match(EMAIL_REGEX, email):
+        if email is None or email == "" or len(email) > User.email.type.length or not re.match(EMAIL_REGEX, email):
             data["email"] = "The email or password you entered is incorrect!"
 
-        if password is None:
-            data["email"] = "The email or password you entered is incorrect!"
-        elif password == "":
-            data["email"] = "The email or password you entered is incorrect!"
-        elif len(password) > 30:
+        if password is None or password == "" or len(password) > PASSWORD_LENGTH_ALLOWED:
             data["email"] = "The email or password you entered is incorrect!"
 
         result = ()
@@ -241,19 +238,19 @@ def AccountUser(firstname, middlename, lastname, gender, birth):
         data["user"] = "Rejected field!"
     elif firstname == "":
         data["user"] = "Missing first name!"
-    elif len(firstname) > 30:
+    elif len(firstname) > UserExt.first_name.type.length:
         data["user"] = "First name too long!"
 
     if middlename is None:
         data["user"] = "Rejected field!"
-    elif len(middlename) > 30:
+    elif len(middlename) > UserExt.middle_name.type.length:
         data["user"] = "Middle name too long!"
 
     if lastname is None:
         data["user"] = "Rejected field!"
     elif lastname == "":
         data["user"] = "Missing last name!"
-    elif len(lastname) > 30:
+    elif len(lastname) > UserExt.last_name.type.length:
         data["user"] = "Last name too long!"
 
     if gender is None:
@@ -314,6 +311,8 @@ def account():
                 data["email"] = "Rejected field!"
             elif email == "":
                 data["email"] = "Missing email!"
+            elif len(email) > User.email.type.length:
+                data["email"] = "Email too long!"
             elif not re.match(EMAIL_REGEX, email):
                 data["email"] = "Email address!"
 
@@ -338,14 +337,14 @@ def account():
                 data["password"] = "Rejected field!"
             elif password == "":
                 data["password"] = "Missing password!"
-            elif len(password) > 30:
+            elif len(password) > PASSWORD_LENGTH_ALLOWED:
                 data["password"] = "Password too long!"
 
             if newPassword is None:
                 data["password"] = "Rejected field!"
             elif newPassword == "":
                 data["password"] = "Missing new password!"
-            elif len(newPassword) > 30:
+            elif len(newPassword) > PASSWORD_LENGTH_ALLOWED:
                 data["password"] = "New password too long!"
 
             if newRePassword is None:
