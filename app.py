@@ -54,7 +54,12 @@ def index():
 
 @app.route("/q", methods=["GET"])
 def q():
-    return render_template("search.html")
+    products = db.session.execute(select(Product, ProductImage).
+                                    where(Product.title.like("%{}%".format(request.args["title"])), Product.is_deleted == False).
+                                    group_by(ProductImage.product).
+                                    join(ProductImage, Product.id == ProductImage.product)).fetchall()
+
+    return render_template("search.html", products=products)
 
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
