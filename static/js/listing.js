@@ -1,8 +1,11 @@
 const add = document.querySelector(".Add");
+const deletebtn = document.querySelector(".Delete");
 const addModal = document.querySelector(".cmodal");
 const closeAddModal = document.querySelector(".cmodalContentClose");
 const addModalForm = document.querySelector(".cmodalContent form");
 const files = document.querySelector("input[type=file]").files;
+const checkBoxes = document.querySelectorAll(".checkDelete");
+let toDeleteParams = new FormData();
 
 add.addEventListener("click", function()
 {
@@ -13,6 +16,21 @@ closeAddModal.addEventListener("click", function()
 {
     addModal.style.display = "none";
 });
+
+for (let checkBox of checkBoxes)
+{
+    checkBox.checked = false;
+    checkBox.addEventListener("change", function(event)
+    {
+        if (event.target.checked)
+        {
+            toDeleteParams.append(event.target.value, event.target.value)
+        } else
+        {
+            toDeleteParams.delete(event.target.value)
+        }
+    });
+}
 
 // Forms ---
 function FieldError(field, message, display)
@@ -92,3 +110,29 @@ for (let input of addModalForm.elements)
         }
     });
 }
+
+deletebtn.addEventListener("click", function()
+{
+    if (Array.from(toDeleteParams.values()).length <= 0)
+    {
+        window.alert("No selected item!");
+        return 1;
+    }
+
+    toDeleteParams.append("action", "Delete")
+    let xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function()
+    {
+        if (xhr.readyState == 4 && xhr.status == 200)
+        {
+            let apiResponse = JSON.parse(xhr.responseText);
+            window.alert(apiResponse.message);
+        }
+    }
+
+    xhr.open("POST", "/me/listing", true);
+    xhr.send(toDeleteParams);
+
+    window.location.reload();
+});
