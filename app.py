@@ -62,6 +62,10 @@ def q():
 
     return render_template("search.html", products=products)
 
+@app.route("/product/<int:id>", methods=["GET"])
+def product(id):
+    return render_template("/product/viewProduct.html")
+
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
     if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:
