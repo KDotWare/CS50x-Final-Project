@@ -50,7 +50,7 @@ addModalForm.addEventListener("submit", function(event)
             } else if (apiResponse.status == 200)
             {
                 window.alert(apiResponse.message);
-                closeAddModal.click()
+                window.location.reload();
             }
         }
     }
