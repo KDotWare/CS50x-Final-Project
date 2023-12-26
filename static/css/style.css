@@ -240,6 +240,10 @@ footer a {
 
 .listing {
     min-height: 40em;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
 }
  
  /* Large devices (laptops/desktops, 992px and up) */
