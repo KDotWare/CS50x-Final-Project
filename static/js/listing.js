@@ -119,7 +119,10 @@ deletebtn.addEventListener("click", function()
         return 1;
     }
 
-    toDeleteParams.append("action", "Delete")
+    if (!toDeleteParams.has("action"))
+    {
+        toDeleteParams.append("action", "Delete");
+    }
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function()
