@@ -490,7 +490,7 @@ def listing():
     else:
         categories = db.session.execute(select(Category)).fetchall()
         products = db.session.execute(select(Product, ProductImage).
-                                        where(Product.user == session["user_id"]).
+                                        where(Product.user == session["user_id"], Product.is_deleted == False).
                                         group_by(ProductImage.product).
                                         join(ProductImage, Product.id == ProductImage.product)).fetchall()
 
