@@ -459,6 +459,26 @@ def listing():
                 json["status"] = 200
                 json["message"] = "Successfully added!"
                 json["data"] = {}
+        elif action == "Delete":
+            if len(request.form) <= 1:
+                data["message"] = "No selected item!"
+
+            if not data:
+                for x in request.form.values():
+                    if x != "Delete":
+                        product = db.session.execute(select(Product).where(Product.id == x)).one_or_none()
+                        if product is None:
+                            data["message"] = "Invalid product item!"
+                            break
+
+                        product[0].is_deleted = True
+                        db.session.flush()
+                        db.session.commit()
+
+                if not data:
+                    json["status"] = 200
+                    json["message"] = "Successfully deleted!"
+                    json["data"] = {}
 
         if data:
             json["status"] = 400
