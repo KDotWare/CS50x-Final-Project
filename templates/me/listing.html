@@ -57,6 +57,9 @@
         </div>
     </div>
     <div class="listing container-fluid">
+        {% if products|length <= 0 %}
+            <h3 class="my-5">No product listed</h3>
+        {% endif %}
         {% for value in products %}
             {% set product = value[0] %}
             {% set productImg = value[1] %}
