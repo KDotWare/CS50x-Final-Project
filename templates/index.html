@@ -1,6 +1,6 @@
 {#
     Todo's:
-    - Make categories dynamically insert from database
+    - Fix category text
 #}
 
 {% extends "layout.html" %}
@@ -15,36 +15,15 @@
     <div class="container-fluid py-4">
         <h2 class="text-center m-5">Categories</h2>
         <div class="categories container-fluid p-5">
-            <div>
-                <form style="margin-top: 1.3em;" action="/q" method="GET">
-                    <input name="category" value="FruitsAndVegetables" type="hidden">
-                    <input type="submit" value="Fruits&#10;and&#10;Vegetables">
-                </form>
-            </div>
-            <div>
-                <form style="margin-top: 2.5em;" action="/q" method="GET">
-                    <input name="category" value="WholeGrains" type="hidden">
-                    <input type="submit" value="Whole&#10;Grains">
-                </form>
-            </div>
-            <div>
-                <form style="margin-top: 3.5em;" action="/q" method="GET">
-                    <input name="category" value="Legumes" type="hidden">
-                    <input type="submit" value="Legumes">
-                </form>
-            </div>
-            <div>
-                <form style="margin-top: 1.5em;" action="/q" method="GET">
-                    <input name="category" value="NutsAndSeeds" type="hidden">
-                    <input type="submit" value="Nuts&#10;and&#10;Seeds">
-                </form>
-            </div>
-            <div>
-                <form style="margin-top: 2.5em;" action="/q" method="GET">
-                    <input name="category" value="PlantbasedProteins" type="hidden">
-                    <input type="submit" value="Plant-based&#10;Proteins">
-                </form>
-            </div>
+            {% for category in categories %}
+                {{ category.name }}
+                <div>
+                    <form style="margin-top: 1.3em;" action="/q" method="GET">
+                        <input name="category" value="FruitsAndVegetables" type="hidden">
+                        <input type="submit" value="{{ category[0].name }}" style="max-width: 5em;">
+                    </form>
+                </div>
+            {% endfor %}
         </div>
     </div>
     <div class="slogan container">

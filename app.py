@@ -49,7 +49,8 @@ def AllowedImageFile(filename):
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    categories = db.session.execute(select(Category)).fetchall()
+    return render_template("index.html", categories=categories)
 
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
