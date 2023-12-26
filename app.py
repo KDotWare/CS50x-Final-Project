@@ -444,26 +444,27 @@ def listing():
                         data["listing"] = "Invalid file type!"
                         break
 
+            if not data:
+                product = Product(user=session["user_id"], title=title, price=price, category=category[0].id, description=description, availability=availability, mark_sold=False, is_deleted=False)
+                db.session.add(product)
+                db.session.flush()
+                for file in files:
+                    filename = secure_filename(file.filename)
+                    filename = str(product.id) + str(datetime.datetime.now().strftime("%y%m%d%H%M%S%f")) + filename
+
+                    file.save(join(join(UPLOAD_FOLDER, "imgs"), filename))
+                    db.session.add(ProductImage(product=product.id, file_name=filename))
+                db.session.commit()
+
+                json["status"] = 200
+                json["message"] = "Successfully added!"
+                json["data"] = {}
+
         if data:
             json["status"] = 400
             json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
             json["data"] = data
             return jsonify(json)
-
-        product = Product(user=session["user_id"], title=title, price=price, category=category[0].id, description=description, availability=availability, mark_sold=False, is_deleted=False)
-        db.session.add(product)
-        db.session.flush()
-        for file in files:
-            filename = secure_filename(file.filename)
-            filename = str(product.id) + str(datetime.datetime.now().strftime("%y%m%d%H%M%S%f")) + filename
-
-            file.save(join(join(UPLOAD_FOLDER, "imgs"), filename))
-            db.session.add(ProductImage(product=product.id, file_name=filename))
-        db.session.commit()
-
-        json["status"] = 200
-        json["message"] = "Successfully added!"
-        json["data"] = {}
 
         return jsonify(json)
     else:
