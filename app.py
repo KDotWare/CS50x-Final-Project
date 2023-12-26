@@ -52,6 +52,10 @@ def index():
     categories = db.session.execute(select(Category)).fetchall()
     return render_template("index.html", categories=categories)
 
+@app.route("/q", methods=["GET"])
+def q():
+    return render_template("search.html")
+
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
     if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:
