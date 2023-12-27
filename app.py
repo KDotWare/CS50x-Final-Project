@@ -288,6 +288,13 @@ def AccountUser(firstname, middlename, lastname, gender, birth):
         except ValueError:
             data["user"] = "Rejected field!"
 
+    user = db.session.execute(select(User).where(User.id == session["user_id"])).one_or_none()
+    if not user[0].is_user_ext:
+        user[0].is_user_ext = True
+        db.session.flush()
+    else:
+        data["user"] = "Already changed!"
+
     if not data:
         userext = db.session.execute(select(UserExt).filter_by(user_id=session["user_id"])).one_or_none()
         userext = userext[0]
@@ -404,10 +411,18 @@ def account():
 @login_required
 def listing():
     if request.method == "POST":
-        action = request.form.get("action")
-
         json = {}
         data = {}
+
+        user = db.session.execute(select(User).where(User.id==session["user_id"])).one_or_none()
+        if not user[0].is_user_ext:
+            data["listing"] = "Update your user profile first! On your account"
+            json["status"] = 400
+            json["message"] = "The server cannot or will not process the request due to something that is perceived to be a client error."
+            json["data"] = data
+            return jsonify(json)
+
+        action = request.form.get("action")
 
         if action == "Add":
             title = request.form.get("title")
