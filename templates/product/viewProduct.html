@@ -9,8 +9,8 @@
         <div id="carouselExample" class="carousel slide h-100">
             <div class="carousel-inner">
                 {% for productImg in productImgs %}
-                    <div class="imgs carousel-item">
-                        <img src="{{ url_for('uploads', filename='imgs/' + productImg[0].file_name) }}" class="d-block" height="250px" width="500px">
+                    <div class="productViewImgs carousel-item">
+                        <img src="{{ url_for('uploads', filename='imgs/' + productImg[0].file_name) }}" class="d-block" height="300px" width="100%">
                     </div>
                 {% endfor %}
             </div>
@@ -23,7 +23,7 @@
                 <span class="visually-hidden">Next</span>
             </button>
         </div>
-        <div class="m-3">
+        <div class="productViewContent">
             {% if product[0].mark_sold %}
                 <div class="alert alert-info">
                     <strong>Info!</strong> This product mark as sold!
@@ -39,11 +39,11 @@
             {% else %}
                 <h5><b>Availability:</b> Single Item</h5>
             {% endif %}
-            <button type="button" class="btn btn-success">Message</button>
+            <button type="button" class="btn btn-secondary">Message</button>
         </div>
     </div>
     <script>
-        let carouselItem = document.querySelector(".imgs");
+        let carouselItem = document.querySelector(".productViewImgs");
         carouselItem.setAttribute("class", "imgs carousel-item active");
     </script>
 {% endblock %}

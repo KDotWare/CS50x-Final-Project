@@ -246,11 +246,23 @@ footer a {
     justify-content: center;
 }
 
+#carouselExample {
+    width: 500px;
+    border: 1px solid #1aa644;
+}
+
 .productView {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     flex-wrap: wrap;
     min-height: 35em;
+}
+
+.productViewContent {
+    margin: 0;
+    padding: 2em;
+    background-color: #1aa644;
+    color: #ffffff;
 }
  
  /* Large devices (laptops/desktops, 992px and up) */
