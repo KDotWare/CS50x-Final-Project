@@ -70,6 +70,11 @@ def product(id):
 
     return render_template("/product/viewProduct.html", product=product, productImgs=productImgs, productCategory=productCategory)
 
+@app.route("/me/chat", methods=["GET"])
+@login_required
+def chat():
+    return render_template("/me/chat.html")
+
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
     if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:

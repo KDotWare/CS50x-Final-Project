@@ -60,3 +60,19 @@ class ProductImage(Base):
     id = Column("id", Integer, autoincrement=True, primary_key=True)
     product_id = Column("product_id", Integer, ForeignKey("product.id"), nullable=False)
     file_name = Column("file_name", Text, nullable=False)
+
+class Chat(Base):
+    __tablename__ = "chat"
+
+    id = Column("id", Integer, autoincrement=True, primary_key=True)
+    user1_id = Column("user1_id", Integer, ForeignKey("user.id"), nullable=False)
+    user2_id = Column("user2_id", Integer, ForeignKey("user.id"), nullable=False)
+
+class Message(Base):
+    __tablename__ = "message"
+
+    id = Column("id", Integer, autoincrement=True, primary_key=True)
+    chat_id = Column("chat_id", Integer, ForeignKey("chat.id"), nullable=False)
+    sender_id = Column("sender_id", Integer, ForeignKey("user.id"), nullable=False)
+    message = Column("message", String(100), nullable=False)
+    time_stamp = Column("time_stamp", DateTime, nullable=False)
