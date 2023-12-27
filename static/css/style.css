@@ -238,7 +238,7 @@ footer a {
     cursor: pointer;
 }
 
-.listing {
+.searchList {
     min-height: 40em;
     display: flex;
     flex-direction: row;
