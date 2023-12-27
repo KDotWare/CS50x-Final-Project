@@ -64,7 +64,14 @@ def q():
 
 @app.route("/product/<int:id>", methods=["GET"])
 def product(id):
+    if id <= 0:
+        return redirect("/")
+
     product = db.session.execute(select(Product).where(Product.id == id, Product.is_deleted == False)).one_or_none()
+
+    if product is None:
+        return redirect("/")
+
     productImgs = db.session.execute(select(ProductImage).where(ProductImage.product_id == id)).fetchall()
     productCategory = db.session.execute(select(Category).where(Category.id == product[0].category)).one_or_none()
 
