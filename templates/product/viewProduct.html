@@ -1,7 +1,49 @@
 {% extends "layout.html" %}
 
 {% block title %}
+    {{ product[0].title }}
 {% endblock %}
 
 {% block main %}
+    <div class="productView container-fluid my-5">
+        <div id="carouselExample" class="carousel slide h-100">
+            <div class="carousel-inner">
+                {% for productImg in productImgs %}
+                    <div class="imgs carousel-item">
+                        <img src="{{ url_for('uploads', filename='imgs/' + productImg[0].file_name) }}" class="d-block" height="250px" width="500px">
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        <div class="m-3">
+            {% if product[0].mark_sold %}
+                <div class="alert alert-info">
+                    <strong>Info!</strong> This product mark as sold!
+                </div>
+            {% endif %}
+            <h3>{{ product[0].title }}</h3>
+            <h5><b>Price: </b>{{ product[0].price }}</h5>
+            <h5><b>Description</b></h5>
+            <p>{{ product[0].description }}</p>
+            <h5><b>Category: </b>{{ productCategory[0].name }}</h5>
+            {% if product.availability %}
+                <h5><b>Availability:</b> In Stock</h5>
+            {% else %}
+                <h5><b>Availability:</b> Single Item</h5>
+            {% endif %}
+            <button type="button" class="btn btn-success">Message</button>
+        </div>
+    </div>
+    <script>
+        let carouselItem = document.querySelector(".imgs");
+        carouselItem.setAttribute("class", "imgs carousel-item active");
+    </script>
 {% endblock %}

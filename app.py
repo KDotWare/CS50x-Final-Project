@@ -64,7 +64,11 @@ def q():
 
 @app.route("/product/<int:id>", methods=["GET"])
 def product(id):
-    return render_template("/product/viewProduct.html")
+    product = db.session.execute(select(Product).where(Product.id == id)).one_or_none()
+    productImgs = db.session.execute(select(ProductImage).where(ProductImage.product == id)).fetchall()
+    productCategory = db.session.execute(select(Category).where(Category.id == product[0].category)).one_or_none()
+
+    return render_template("/product/viewProduct.html", product=product, productImgs=productImgs, productCategory=productCategory)
 
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
