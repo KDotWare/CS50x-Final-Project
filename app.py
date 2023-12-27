@@ -74,8 +74,9 @@ def product(id):
 
     productImgs = db.session.execute(select(ProductImage).where(ProductImage.product_id == id)).fetchall()
     productCategory = db.session.execute(select(Category).where(Category.id == product[0].category)).one_or_none()
+    userExt = db.session.execute(select(UserExt).where(UserExt.user_id == session["user_id"])).one_or_none()
 
-    return render_template("/product/viewProduct.html", product=product, productImgs=productImgs, productCategory=productCategory)
+    return render_template("/product/viewProduct.html", product=product, productImgs=productImgs, productCategory=productCategory, userExt=userExt)
 
 @app.route("/me/chat", methods=["GET"])
 @login_required
