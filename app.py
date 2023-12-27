@@ -467,7 +467,7 @@ def listing():
                         break
 
             if not data:
-                product = Product(user=session["user_id"], title=title, price=price, category=category[0].id, description=description, availability=availability, mark_sold=False, is_deleted=False)
+                product = Product(user_id=session["user_id"], title=title, price=price, category=category[0].id, description=description, availability=availability, mark_sold=False, is_deleted=False)
                 db.session.add(product)
                 db.session.flush()
                 for file in files:
@@ -475,7 +475,7 @@ def listing():
                     filename = str(product.id) + str(datetime.datetime.now().strftime("%y%m%d%H%M%S%f")) + filename
 
                     file.save(join(join(UPLOAD_FOLDER, "imgs"), filename))
-                    db.session.add(ProductImage(product=product.id, file_name=filename))
+                    db.session.add(ProductImage(product_id=product.id, file_name=filename))
                 db.session.commit()
 
                 json["status"] = 200
