@@ -27,7 +27,7 @@ class UserExt(Base):
     __tablename__ = "userext"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
-    user = Column("user", Integer, ForeignKey("user.id"), nullable=False)
+    user_id = Column("user_id", Integer, ForeignKey("user.id"), nullable=False)
     first_name = Column("first_name", String(30), nullable=False)
     middle_name = Column("middle_name", String(30), nullable=False)
     last_name = Column("last_name", String(30), nullable=False)
@@ -45,7 +45,7 @@ class Product(Base):
     __tablename__ = "product"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
-    user = Column("user", Integer, ForeignKey("user.id"), nullable=False)
+    user_id = Column("user_id", Integer, ForeignKey("user.id"), nullable=False)
     title = Column("title", String(100), nullable=False)
     price = Column("price", Float(decimal_return_scale=2), nullable=False)
     category = Column("category", Integer, ForeignKey("category.id"), nullable=False)
@@ -58,5 +58,5 @@ class ProductImage(Base):
     __tablename__ = "productimage"
 
     id = Column("id", Integer, autoincrement=True, primary_key=True)
-    product = Column("product", Integer, ForeignKey("product.id"), nullable=False)
+    product_id = Column("product_id", Integer, ForeignKey("product.id"), nullable=False)
     file_name = Column("file_name", Text, nullable=False)

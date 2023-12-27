@@ -57,15 +57,15 @@ def index():
 def q():
     products = db.session.execute(select(Product, ProductImage).
                                     where(Product.title.like("%{}%".format(request.args["title"])), Product.is_deleted == False).
-                                    group_by(ProductImage.product).
-                                    join(ProductImage, Product.id == ProductImage.product)).fetchall()
+                                    group_by(ProductImage.product_id).
+                                    join(ProductImage, Product.id == ProductImage.product_id)).fetchall()
 
     return render_template("search.html", products=products)
 
 @app.route("/product/<int:id>", methods=["GET"])
 def product(id):
-    product = db.session.execute(select(Product).where(Product.id == id)).one_or_none()
-    productImgs = db.session.execute(select(ProductImage).where(ProductImage.product == id)).fetchall()
+    product = db.session.execute(select(Product).where(Product.id == id, Product.is_deleted == False)).one_or_none()
+    productImgs = db.session.execute(select(ProductImage).where(ProductImage.product_id == id)).fetchall()
     productCategory = db.session.execute(select(Category).where(Category.id == product[0].category)).one_or_none()
 
     return render_template("/product/viewProduct.html", product=product, productImgs=productImgs, productCategory=productCategory)
@@ -175,7 +175,7 @@ def register():
         user = User(email=email, password=generate_password_hash(password, PASSWORD_ENCRYPT_METHOD), email_verified=False, is_user_ext=False, registered_date=datetime.datetime.now())
         db.session.add(user)
         db.session.flush()
-        userExt = UserExt(user=user.id, first_name="", middle_name="", last_name="", gender="", birth=datetime.date(1899, 12, 31))
+        userExt = UserExt(user_id=user.id, first_name="", middle_name="", last_name="", gender="", birth=datetime.date(1899, 12, 31))
         db.session.add(userExt)
         db.session.commit()
 
@@ -277,7 +277,7 @@ def AccountUser(firstname, middlename, lastname, gender, birth):
             data["user"] = "Rejected field!"
 
     if not data:
-        userext = db.session.execute(select(UserExt).filter_by(user=session["user_id"])).one_or_none()
+        userext = db.session.execute(select(UserExt).filter_by(user_id=session["user_id"])).one_or_none()
         userext = userext[0]
         userext.first_name = firstname
         userext.middle_name = middlename
@@ -383,7 +383,7 @@ def account():
         return jsonify(json)
 
     else:
-        userext = db.session.execute(select(UserExt).filter_by(user=session["user_id"])).one_or_none()
+        userext = db.session.execute(select(UserExt).filter_by(user_id=session["user_id"])).one_or_none()
         userext = userext[0]
 
         return render_template("me/account.html", userext=userext)
@@ -507,9 +507,9 @@ def listing():
     else:
         categories = db.session.execute(select(Category)).fetchall()
         products = db.session.execute(select(Product, ProductImage).
-                                        where(Product.user == session["user_id"], Product.is_deleted == False).
-                                        group_by(ProductImage.product).
-                                        join(ProductImage, Product.id == ProductImage.product)).fetchall()
+                                        where(Product.user_id == session["user_id"], Product.is_deleted == False).
+                                        group_by(ProductImage.product_id).
+                                        join(ProductImage, Product.id == ProductImage.product_id)).fetchall()
 
         return render_template("/me/listing.html", categories=categories, products=products)
 
