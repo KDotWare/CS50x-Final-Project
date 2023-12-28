@@ -67,6 +67,7 @@ class Chat(Base):
     id = Column("id", Integer, autoincrement=True, primary_key=True)
     user1_id = Column("user1_id", Integer, ForeignKey("user.id"), nullable=False)
     user2_id = Column("user2_id", Integer, ForeignKey("user.id"), nullable=False)
+    product_id = Column("product_id", Integer, ForeignKey("product.id"), nullable=False)
 
 class Message(Base):
     __tablename__ = "message"
