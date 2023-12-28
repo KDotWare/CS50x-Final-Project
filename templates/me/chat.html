@@ -5,4 +5,41 @@
 {% endblock %}
 
 {% block main %}
+    <div class="chatWrapper">
+        <div class="chat">
+            {% for x in range(10) %}
+                <div class="chatUser">
+                    <div>
+                        <img src="https://i.ibb.co/jfB6fJ1/user.png">
+                    </div>
+                    <div>
+                        <strong>User full name</strong>
+                        <p>Title Shiitake</p>
+                        <p style="color:#bbbbbb;">You: Hello, GoodmorningHello, Goodmorning Hello, GoodmorningHello, Goodmorning</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="chatMessageArea">
+            <div class="chatMessage" style="height: 100%;">
+                <div style="padding: .5em;">
+                    <p style="padding: .5em; width: 500px; background-color: #0d5923; color: #ffffff;">In this chapter we will show some basic HTML examples.</p>
+                </div>
+                <div style="padding: .5em; display: flex; justify-content: end;">
+                    <p style="padding: .5em; width: 500px; background-color: #1aa644; color: #ffffff;">All HTML documents must start with a document type declaration: <!DOCTYPE html>.
+                        The HTML document itself begins with <html> and ends with </html>.
+                        The visible part of the HTML document is between <body> and </body>All HTML documents must start with a document type declaration: <!DOCTYPE html>.
+                        The HTML document itself begins with <html> and ends with </html>.
+                        The visible part of the HTML document is between <body> and </body></p>
+                </div>
+                <div style="padding: .5em;">
+                    <p style="padding: .5em; width: 500px; background-color: #0d5923; color: #ffffff;">Hello, GoodmorningHello, Goodmorning Hello, GoodmorningHello, Goodmorning</p>
+                </div>
+            </div>
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Send a message">
+                <button class="btn btn-primary" type="button">Send</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}

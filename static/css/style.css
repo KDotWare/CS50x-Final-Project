@@ -264,6 +264,49 @@ footer a {
     background-color: #1aa644;
     color: #ffffff;
 }
+
+.chatWrapper {
+    display: flex;
+    flex-direction: row;
+    min-height: 40em;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    background-color: #1aa644;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    max-height: 40em;
+}
+
+.chatUser {
+    margin: 0;
+    padding: .5em;
+    max-width: 25em;
+    min-height: 5.5em;
+    height: 5.5em;
+    border-top: 1px solid #0d5923;
+    border-bottom: 1px solid #0d5923;
+    display: flex;
+    flex-direction: row;
+    color: #ffffff;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.chatMessage {
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.chatUser p, .chatMessage p {
+    margin: 0;
+}
+
+.chatMessageArea {
+    width: 100%;
+}
  
  /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (max-width: 992px) {
