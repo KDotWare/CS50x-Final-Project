@@ -7,15 +7,19 @@
 {% block main %}
     <div class="chatWrapper">
         <div class="chat">
-            {% for x in range(10) %}
+            {% for chat in chats %}
                 <div class="chatUser">
                     <div>
                         <img src="https://i.ibb.co/jfB6fJ1/user.png">
                     </div>
                     <div>
-                        <strong>User full name</strong>
-                        <p>Title Shiitake</p>
-                        <p style="color:#bbbbbb;">You: Hello, GoodmorningHello, Goodmorning Hello, GoodmorningHello, Goodmorning</p>
+                        <strong>{{ chat.first_name }} {{ chat.middle_name }} {{ chat.last_name }}</strong>
+                        <p>{{ chat.title }}</p>
+                        {% if chat.sender_id == session["user_id"] %}
+                            <p style="color:#bbbbbb;">You: {{ chat.message }}</p>
+                        {% else %}
+                            <p style="color:#bbbbbb;">{{ chat.first_name }}: {{ chat.message }}</p>
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
