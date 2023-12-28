@@ -284,6 +284,7 @@ footer a {
     margin: 0;
     padding: .5em;
     max-width: 25em;
+    width: 25em;
     min-height: 5.5em;
     height: 5.5em;
     border-top: 1px solid #0d5923;
