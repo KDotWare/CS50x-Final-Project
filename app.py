@@ -176,19 +176,6 @@ def chat():
     else:
         return render_template("/me/chat.html")
 
-    chats = db.session.execute(select(Chat.id, UserExt.first_name, UserExt.middle_name, UserExt.last_name, Product.title, Message.sender_id, Message.message).
-        join(UserExt, Chat.user2_id == UserExt.user_id).
-        join(Message, Chat.id == Message.chat_id).
-        join(Product, Chat.product_id == Product.id).
-        where(Chat.user1_id == session["user_id"]).
-        union(select(Chat.id, UserExt.first_name, UserExt.middle_name, UserExt.last_name, Product.title, Message.sender_id, Message.message).
-        join(UserExt, Chat.user1_id == UserExt.user_id).
-        join(Message, Chat.id == Message.chat_id).
-        join(Product, Chat.product_id == Product.id).
-        where(Chat.user2_id == session["user_id"])).limit(1)).fetchall()
-
-    return render_template("/me/chat.html", chats=chats)
-
 @app.route("/contactus", methods=["GET", "POST"])
 def contactus():
     if request.method == "POST" and request.content_type == FORM_CONTENT_TYPE:
