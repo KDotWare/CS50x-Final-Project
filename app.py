@@ -78,9 +78,104 @@ def product(id):
 
     return render_template("/product/viewProduct.html", product=product, productImgs=productImgs, productCategory=productCategory, userExt=userExt)
 
-@app.route("/me/chat", methods=["GET"])
+@app.route("/me/chat", methods=["GET", "POST"])
 @login_required
 def chat():
+    if request.method == "POST" and request.content_type == "application/json":
+        try:
+            userReq = request.get_json()
+        except:
+            return redirect("/")
+
+        if "action" not in userReq:
+            return redirect("/")
+
+        if userReq["action"] == "GetChats":
+            results = db.session.execute(select(Chat.id, Chat.product_id, UserExt.first_name, UserExt.middle_name, UserExt.last_name, Product.title).
+                                    join(UserExt, Chat.user2_id == UserExt.user_id).
+                                    join(Product, Chat.product_id == Product.id).
+                                    where(Chat.user1_id == session["user_id"]).
+                                    union(select(Chat.id, Chat.product_id, UserExt.first_name, UserExt.middle_name, UserExt.last_name, Product.title).
+                                    join(UserExt, Chat.user1_id == UserExt.user_id).
+                                    join(Product, Chat.product_id == Product.id).
+                                    where(Chat.user2_id == session["user_id"]))).fetchall()
+
+            chats = []
+            for result in results:
+                chat = {}
+                chat["chat_id"] = result.id
+                chat["first_name"] = result.first_name
+                chat["middle_name"] = result.middle_name
+                chat["last_name"] = result.last_name
+                chat["subject"] = result.title
+                chats.append(chat)
+
+            return jsonify(chats)
+        elif userReq["action"] == "GetChatMessages":
+            if "chat_id" not in userReq:
+                return redirect("/")
+
+            result = db.session.execute(select(Chat.id).
+                                    join(UserExt, Chat.user2_id == UserExt.user_id).
+                                    where(Chat.user1_id == session["user_id"], Chat.id == userReq["chat_id"]).
+                                    union(select(Chat.id).
+                                    join(UserExt, Chat.user1_id == UserExt.user_id).
+                                    where(Chat.user2_id == session["user_id"], Chat.id == userReq["chat_id"]))).fetchall()
+
+            if result is None:
+                return redirect("/")
+
+            results = db.session.execute(select(Message).where(Message.chat_id == result[0][0])).fetchall()
+
+            messages = []
+            for msg in results:
+                message = {}
+                message["message_id"] = msg[0].id
+                if msg[0].sender_id == session["user_id"]:
+                    message["is_sender"] = True
+                else:
+                    message["is_sender"] = False
+                message["message"] = msg[0].message
+                message["time_stamp"] = msg[0].time_stamp
+                messages.append(message)
+
+            return jsonify(messages)
+        elif userReq["action"] == "UpdateChatMessages":
+            if "message_id" not in userReq and "chat_id" not in userReq:
+                return redirect("/")
+
+            results = db.session.execute(select(Message).filter(Message.id > userReq["message_id"], Message.chat_id == userReq["chat_id"])).fetchall()
+
+            if results is None:
+                return redirect("/")
+            elif len(results) <= 0:
+                return jsonify({})
+
+            messages = []
+            for msg in results:
+                message = {}
+                message["message_id"] = msg[0].id
+                if msg[0].sender_id == session["user_id"]:
+                    message["is_sender"] = True
+                else:
+                    message["is_sender"] = False
+                message["message"] = msg[0].message
+                message["time_stamp"] = msg[0].time_stamp
+                messages.append(message)
+
+            return jsonify(messages)
+        elif userReq["action"] == "PostChatMessage":
+            if "message" not in userReq and "chat_id" not in userReq and "time_stamp" not in userReq:
+                return redirect("/")
+
+            message = Message(chat_id=userReq["chat_id"], sender_id=session["user_id"], message=userReq["message"], time_stamp=datetime.datetime.fromtimestamp(userReq["time_stamp"] / 1e3))
+            db.session.add(message)
+            db.session.commit()
+
+            return jsonify({ "status" : 200, "message_id": message.id })
+    else:
+        return render_template("/me/chat.html")
+
     chats = db.session.execute(select(Chat.id, UserExt.first_name, UserExt.middle_name, UserExt.last_name, Product.title, Message.sender_id, Message.message).
         join(UserExt, Chat.user2_id == UserExt.user_id).
         join(Message, Chat.id == Message.chat_id).

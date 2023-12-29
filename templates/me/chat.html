@@ -7,43 +7,226 @@
 {% block main %}
     <div class="chatWrapper">
         <div class="chat">
-            {% for chat in chats %}
-                <div class="chatUser">
-                    <div>
-                        <img src="https://i.ibb.co/jfB6fJ1/user.png">
-                    </div>
-                    <div>
-                        <strong>{{ chat.first_name }} {{ chat.middle_name }} {{ chat.last_name }}</strong>
-                        <p>{{ chat.title }}</p>
-                        {% if chat.sender_id == session["user_id"] %}
-                            <p style="color:#bbbbbb;">You: {{ chat.message }}</p>
-                        {% else %}
-                            <p style="color:#bbbbbb;">{{ chat.first_name }}: {{ chat.message }}</p>
-                        {% endif %}
-                    </div>
-                </div>
-            {% endfor %}
         </div>
         <div class="chatMessageArea">
-            <div class="chatMessage" style="height: 100%;">
-                <div style="padding: .5em;">
-                    <p style="padding: .5em; width: 500px; background-color: #0d5923; color: #ffffff;">In this chapter we will show some basic HTML examples.</p>
-                </div>
-                <div style="padding: .5em; display: flex; justify-content: end;">
-                    <p style="padding: .5em; width: 500px; background-color: #1aa644; color: #ffffff;">All HTML documents must start with a document type declaration: <!DOCTYPE html>.
-                        The HTML document itself begins with <html> and ends with </html>.
-                        The visible part of the HTML document is between <body> and </body>All HTML documents must start with a document type declaration: <!DOCTYPE html>.
-                        The HTML document itself begins with <html> and ends with </html>.
-                        The visible part of the HTML document is between <body> and </body></p>
-                </div>
-                <div style="padding: .5em;">
-                    <p style="padding: .5em; width: 500px; background-color: #0d5923; color: #ffffff;">Hello, GoodmorningHello, Goodmorning Hello, GoodmorningHello, Goodmorning</p>
-                </div>
+            <div class="chatMessage">
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Send a message">
-                <button class="btn btn-primary" type="button">Send</button>
+                <button class="sendBtn btn btn-primary" type="button">Send</button>
             </div>
         </div>
     </div>
+    <script>
+        const chatMessageArea = document.querySelector(".chatMessageArea");
+        const divChat = document.querySelector(".chat");
+        const sendBtn = document.querySelector(".sendBtn");
+        const xhr = new XMLHttpRequest();
+
+        xhr.open("POST", "/me/chat");
+
+        function AddChatMessage(msg, parentElement)
+        {
+            const divMessage = document.createElement("div");
+            divMessage.setAttribute("id", msg["message_id"]);
+            const pMessage = document.createElement("p");
+            if (msg["is_sender"])
+            {
+                divMessage.setAttribute("style", "padding: .5em; display: flex; justify-content: end;");
+                pMessage.setAttribute("style", "padding: .5em; width: 500px; background-color: #1aa644; color: #ffffff;");
+            } else
+            {
+                divMessage.setAttribute("style", "padding: .5em;");
+                pMessage.setAttribute("style", "padding: .5em; width: 500px; background-color: #0d5923; color: #ffffff;");
+            }
+            pMessage.innerHTML = msg["message"];
+            divMessage.appendChild(pMessage);
+            parentElement.appendChild(divMessage);
+        }
+
+        function SendMessageEvent(event)
+        {
+            const inputMessage = document.querySelector(".inputMessage");
+
+            if (!inputMessage.value)
+            {
+                return 1;
+            }
+
+            json = {};
+            json["action"] = "PostChatMessage";
+            json["chat_id"] = event.target.getAttribute("chat-id");
+            json["is_sender"] = true;
+            json["message"] = inputMessage.value;
+            json["time_stamp"] = Date.now();
+
+            const xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "/me/chat");
+            xhr.onreadystatechange = function()
+            {
+                if (xhr.readyState == 4 && xhr.status == 200)
+                {
+                    const status = JSON.parse(xhr.responseText);
+
+                    if (status["status"] == 200)
+                    {
+                        inputMessage.value = "";
+                        json["message_id"] = status["message_id"];
+                        AddChatMessage(json, document.querySelector(".chatMessage"));
+                    }
+                }
+            }
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(json));
+        }
+
+        function AddChatMessages(msgs, chatId)
+        {
+            let chatMessage = document.querySelector(".chatMessage");
+            let chatInputGroup = document.querySelector(".input-group");
+
+            if (chatMessage)
+            {
+                chatMessageArea.removeChild(chatMessage);
+            }
+
+            if (chatInputGroup)
+            {
+                chatMessageArea.removeChild(chatInputGroup);
+            }
+
+            chatMessage = document.createElement("div");
+            chatMessage.setAttribute("class", "chatMessage");
+            chatMessageArea.appendChild(chatMessage);
+
+            chatInputGroup = document.createElement("div");
+            chatInputGroup.setAttribute("class", "input-group");
+            chatMessageArea.appendChild(chatInputGroup);
+
+            const inputText = document.createElement("input");
+            inputText.setAttribute("type", "text");
+            inputText.setAttribute("class", "inputMessage form-control");
+            inputText.setAttribute("placeholder", "Send a message");
+            chatInputGroup.appendChild(inputText);
+
+            const inputButton = document.createElement("button");
+            inputButton.setAttribute("class", "btn btn-primary");
+            inputButton.setAttribute("type", "button");
+            inputButton.setAttribute("chat-id", chatId);
+            inputButton.innerHTML = "Send";
+            inputButton.addEventListener("click", SendMessageEvent);
+            chatInputGroup.appendChild(inputButton);
+
+            for (let msg of msgs)
+            {
+                AddChatMessage(msg, chatMessage);
+            }
+        }
+
+        function ChatUserEvent(event)
+        {
+            const element = event.target;
+
+            if (!element.getAttribute("chat-id"))
+            {
+                return 1;
+            }
+
+            const chatId = element.getAttribute("chat-id");
+            const xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "/me/chat");
+            xhr.onreadystatechange = function()
+            {
+                if (xhr.readyState == 4 && xhr.status == 200)
+                {
+                    const msgs = JSON.parse(xhr.responseText);
+
+                    AddChatMessages(msgs, chatId);
+                }
+            }
+
+            json = {};
+            json["action"] = "GetChatMessages";
+            json["chat_id"] = chatId;
+
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(json));
+
+            const chatWorker = new Worker("{{ url_for('static', filename='js/chatworker.js') }}");
+
+            chatWorker.addEventListener("message", function(event)
+            {
+                const data = event.data;
+                const chatMessage = document.querySelector(".chatMessage");
+
+                if (data["workerAction"] == "GET" && chatMessage.children.length > 0)
+                {
+                    json = {};
+                    json["message_id"] = chatMessage.children[chatMessage.children.length -1].getAttribute("id");
+                    json["chat_id"] = chatId;
+                    chatWorker.postMessage(json);
+                } else if (data["workerAction"] == "UPDATE")
+                {
+                    if (data["messages"]["message_id"] <= chatMessage.children[chatMessage.children.length -1].getAttribute("id"))
+                    {
+                        return 1;
+                    }
+
+                    for (let msg of data["messages"])
+                    {
+                        AddChatMessage(msg, chatMessage);
+                    }
+                }
+            });
+        }
+
+        function AddChatUser(chat)
+        {
+            const divChatUser = document.createElement("div");
+            divChatUser.setAttribute("class", "chatUser");
+            divChatUser.setAttribute("chat-id", chat["chat_id"]);
+            divChatUser.addEventListener("click", ChatUserEvent);
+            divChat.appendChild(divChatUser);
+            //-----
+            const divImg = document.createElement("div");
+            divChatUser.appendChild(divImg);
+
+            const img = document.createElement("img");
+            img.setAttribute("src", "https://i.ibb.co/jfB6fJ1/user.png");
+            divImg.appendChild(img);
+            //-----
+            const divUser = document.createElement("div");
+            divChatUser.appendChild(divUser);
+
+            const fullname = document.createElement("strong");
+            fullname.innerHTML = chat["first_name"];
+            if (chat["middle_name"])
+            {
+                fullname.innerHTML += " " + chat["middle_name"];
+            }
+            fullname.innerHTML += " " + chat["last_name"];
+            divUser.appendChild(fullname);
+
+            const subject = document.createElement("p");
+            subject.innerHTML = chat["subject"];
+            divUser.appendChild(subject);
+        }
+
+        xhr.onreadystatechange = function()
+        {
+            if (xhr.readyState == 4 && xhr.status == 200)
+            {
+                const chats = JSON.parse(xhr.responseText);
+
+                for (let chat of chats)
+                {
+                    AddChatUser(chat);
+                }
+            }
+        }
+        xhr.setRequestHeader("Content-Type", "application/json");
+        xhr.send(JSON.stringify({ "action": "GetChats" }));
+    </script>
 {% endblock %}

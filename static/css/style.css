@@ -277,7 +277,10 @@ footer a {
     background-color: #1aa644;
     overflow-x: hidden;
     overflow-y: scroll;
-    max-height: 40em;
+}
+
+.chat, .chatMessage {
+    height: 40em;
 }
 
 .chatUser {
