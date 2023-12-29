@@ -40,11 +40,39 @@
                 <h5><b>Availability:</b> Single Item</h5>
             {% endif %}
             <h5><strong>Seller: </strong> {{ userExt[0].first_name }} {{ userExt[0].middle_name }} {{ userExt[0].last_name }}</h5>
-            <button type="button" class="btn btn-secondary">Message</button>
+            <button id="{{ product[0].id }}" type="button" class="messageBtn btn btn-secondary">Message</button>
         </div>
     </div>
     <script>
         let carouselItem = document.querySelector(".productViewImgs");
         carouselItem.setAttribute("class", "imgs carousel-item active");
+
+        const messageBtn = document.querySelector(".messageBtn");
+        messageBtn.addEventListener("click", function(event)
+        {
+            json = {};
+            json["action"] = "ChatProduct";
+            json["product_id"] = event.target.getAttribute("id");
+
+            let xhr = new XMLHttpRequest();
+
+            xhr.open("POST", "/me/chat", true);
+
+            xhr.onreadystatechange = function()
+            {
+                if (xhr.readyState == 4 && xhr.status == 200)
+                {
+                    let apiResponse = JSON.parse(xhr.responseText);
+
+                    if (apiResponse["status"] == 200)
+                    {
+                        window.alert(apiResponse["message"]);
+                    }
+                }
+            }
+
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.send(JSON.stringify(json));
+        });
     </script>
 {% endblock %}

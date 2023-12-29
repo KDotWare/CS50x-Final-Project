@@ -10,7 +10,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from werkzeug.utils import secure_filename
 from flask_session import Session
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import select, join
+from sqlalchemy import select, join, or_
 from functools import wraps
 from model import *
 from os import getcwd
@@ -173,6 +173,28 @@ def chat():
             db.session.commit()
 
             return jsonify({ "status" : 200, "message_id": message.id })
+        elif userReq["action"] == "ChatProduct":
+            if "product_id" not in userReq:
+                return redirect("/")
+
+            result = db.session.execute(select(Chat).where(Chat.product_id == userReq["product_id"], or_(Chat.user1_id == session["user_id"], Chat.user2_id == session["user_id"]))).one_or_none()
+
+            if result is not None:
+                return redirect("/me/chat")
+
+            product = db.session.execute(select(Product).where(Product.id == userReq["product_id"], Product.is_deleted == False, Product.user_id != session["user_id"])).one_or_none()
+
+            if product is None:
+                return redirect("/")
+
+            chat = Chat(user1_id=session["user_id"], user2_id=product[0].user_id, product_id=product[0].id)
+            db.session.add(chat)
+            db.session.flush()
+            msg = Message(chat_id=chat.id, sender_id=session["user_id"], message="Hi, I'm interested", time_stamp=datetime.datetime.now())
+            db.session.add(msg)
+            db.session.commit()
+
+            return jsonify({ "status": 200, "message": "Message sent!" })
     else:
         return render_template("/me/chat.html")
 
