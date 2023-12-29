@@ -40,10 +40,6 @@ nav {
     margin-left: 1em;
 }
 
-.navulliNotifSpan {
-    display: none;
-}
-
 .dropdown {
     display: inline-block;
     position: relative;
@@ -326,11 +322,6 @@ footer a {
     .contactusImg {
         margin: 0 auto 0 auto;
         width: 30%;
-    }
-
-    .navulliNotifSpan {
-        display: inline;
-        visibility: visible;
     }
 
     .dropdown-content {
