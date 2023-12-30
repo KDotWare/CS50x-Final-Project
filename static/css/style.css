@@ -275,7 +275,7 @@ footer a {
     overflow-y: scroll;
 }
 
-.chat, .chatMessage {
+.chat, .messageDiv {
     height: 40em;
 }
 
@@ -295,16 +295,16 @@ footer a {
     text-overflow: ellipsis;
 }
 
-.chatMessage {
+.messageDiv {
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
-.chatUser p, .chatMessage p {
+.chatUser p, .messageDiv p {
     margin: 0;
 }
 
-.chatMessageArea {
+.messageWrapper {
     width: 100%;
 }
  
