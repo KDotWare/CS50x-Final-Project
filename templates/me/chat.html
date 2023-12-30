@@ -9,7 +9,7 @@
         <div class="chat">
         </div>
         <div class="messageWrapper">
-            <div class="chatMessage">
+            <div class="messageDiv">
             </div>
             <div class="input-group">
                 <input type="text" class="form-control" placeholder="Send a message">
@@ -73,7 +73,7 @@
                     {
                         inputMessage.value = "";
                         json["message_id"] = status["message_id"];
-                        AddChatMessage(json, document.querySelector(".chatMessage"));
+                        AddChatMessage(json, document.querySelector(".messageDiv"));
                     }
                 }
             }
@@ -83,12 +83,12 @@
 
         function AddChatMessages(msgs, chatId)
         {
-            let chatMessage = document.querySelector(".chatMessage");
+            let messageDiv = document.querySelector(".messageDiv");
             let chatInputGroup = document.querySelector(".input-group");
 
-            if (chatMessage)
+            if (messageDiv)
             {
-                messageWrapper.removeChild(chatMessage);
+                messageWrapper.removeChild(messageDiv);
             }
 
             if (chatInputGroup)
@@ -96,9 +96,9 @@
                 messageWrapper.removeChild(chatInputGroup);
             }
 
-            chatMessage = document.createElement("div");
-            chatMessage.setAttribute("class", "chatMessage");
-            messageWrapper.appendChild(chatMessage);
+            messageDiv = document.createElement("div");
+            messageDiv.setAttribute("class", "messageDiv");
+            messageWrapper.appendChild(messageDiv);
 
             chatInputGroup = document.createElement("div");
             chatInputGroup.setAttribute("class", "input-group");
@@ -120,7 +120,7 @@
 
             for (let msg of msgs)
             {
-                AddChatMessage(msg, chatMessage);
+                AddChatMessage(msg, messageDiv);
             }
         }
 
@@ -159,24 +159,24 @@
             chatWorker.addEventListener("message", function(event)
             {
                 const data = event.data;
-                const chatMessage = document.querySelector(".chatMessage");
+                const messageDiv = document.querySelector(".messageDiv");
 
-                if (data["workerAction"] == "GET" && chatMessage.children.length > 0)
+                if (data["workerAction"] == "GET" && messageDiv.children.length > 0)
                 {
                     json = {};
-                    json["message_id"] = chatMessage.children[chatMessage.children.length -1].getAttribute("id");
+                    json["message_id"] = messageDiv.children[messageDiv.children.length -1].getAttribute("id");
                     json["chat_id"] = chatId;
                     chatWorker.postMessage(json);
                 } else if (data["workerAction"] == "UPDATE")
                 {
-                    if (data["messages"]["message_id"] <= chatMessage.children[chatMessage.children.length -1].getAttribute("id"))
+                    if (data["messages"]["message_id"] <= messageDiv.children[messageDiv.children.length -1].getAttribute("id"))
                     {
                         return 1;
                     }
 
                     for (let msg of data["messages"])
                     {
-                        AddChatMessage(msg, chatMessage);
+                        AddChatMessage(msg, messageDiv);
                     }
                 }
             });
