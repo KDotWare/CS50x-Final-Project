@@ -8,7 +8,7 @@
     <div class="chatWrapper">
         <div class="chat">
         </div>
-        <div class="chatMessageArea">
+        <div class="messageWrapper">
             <div class="chatMessage">
             </div>
             <div class="input-group">
@@ -18,7 +18,7 @@
         </div>
     </div>
     <script>
-        const chatMessageArea = document.querySelector(".chatMessageArea");
+        const messageWrapper = document.querySelector(".messageWrapper");
         const divChat = document.querySelector(".chat");
         const sendBtn = document.querySelector(".sendBtn");
         const xhr = new XMLHttpRequest();
@@ -88,21 +88,21 @@
 
             if (chatMessage)
             {
-                chatMessageArea.removeChild(chatMessage);
+                messageWrapper.removeChild(chatMessage);
             }
 
             if (chatInputGroup)
             {
-                chatMessageArea.removeChild(chatInputGroup);
+                messageWrapper.removeChild(chatInputGroup);
             }
 
             chatMessage = document.createElement("div");
             chatMessage.setAttribute("class", "chatMessage");
-            chatMessageArea.appendChild(chatMessage);
+            messageWrapper.appendChild(chatMessage);
 
             chatInputGroup = document.createElement("div");
             chatInputGroup.setAttribute("class", "input-group");
-            chatMessageArea.appendChild(chatInputGroup);
+            messageWrapper.appendChild(chatInputGroup);
 
             const inputText = document.createElement("input");
             inputText.setAttribute("type", "text");
