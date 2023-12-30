@@ -4,8 +4,9 @@
 KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to buy and sell a products. Who is KaiVegan's target audience? Vegan community.
 
 > [!NOTE]
-> Considered as prototype <br>
-> Still in development
+> Considered as prototype. <br>
+> Real-Time communication is not efficient unlike WebSockets or Server-Sent events.
+> Still in development.
 
 ## Features
 - Database Interaction:
@@ -14,6 +15,8 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
   - Front-to-End ***x-www-form-urlencoded***, ***multipart/form-data***; Vice versa ***json***
 - Security:
   - hash user's plaintext, method=sha?
+- Real-Time communication
+  - Web Worker API
 
 ## Installation
 > [!IMPORTANT]
