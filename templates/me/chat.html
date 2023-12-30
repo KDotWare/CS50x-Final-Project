@@ -25,23 +25,25 @@
 
         xhr.open("POST", "/me/chat");
 
-        function AddChatMessage(msg, parentElement)
+        function AddChatMessage(msg)
         {
-            const divMessage = document.createElement("div");
-            divMessage.setAttribute("id", msg["message_id"]);
-            const pMessage = document.createElement("p");
+            const messageParent = document.querySelector(".messageDiv");
+
+            const message = document.createElement("div");
+            message.setAttribute("id", msg["message_id"]);
+            const messageP = document.createElement("p");
             if (msg["is_sender"])
             {
-                divMessage.setAttribute("style", "padding: .5em; display: flex; justify-content: end;");
-                pMessage.setAttribute("style", "padding: .5em; width: 500px; background-color: #1aa644; color: #ffffff;");
+                message.setAttribute("style", "padding: .5em; display: flex; justify-content: end;");
+                messageP.setAttribute("style", "padding: .5em; width: 500px; background-color: #1aa644; color: #ffffff;");
             } else
             {
-                divMessage.setAttribute("style", "padding: .5em;");
-                pMessage.setAttribute("style", "padding: .5em; width: 500px; background-color: #0d5923; color: #ffffff;");
+                message.setAttribute("style", "padding: .5em;");
+                messageP.setAttribute("style", "padding: .5em; width: 500px; background-color: #0d5923; color: #ffffff;");
             }
-            pMessage.innerHTML = msg["message"];
-            divMessage.appendChild(pMessage);
-            parentElement.appendChild(divMessage);
+            messageP.innerHTML = msg["message"];
+            message.appendChild(messageP);
+            messageParent.appendChild(message);
         }
 
         function SendMessageEvent(event)
@@ -73,7 +75,7 @@
                     {
                         inputMessage.value = "";
                         json["message_id"] = status["message_id"];
-                        AddChatMessage(json, document.querySelector(".messageDiv"));
+                        AddChatMessage(json);
                     }
                 }
             }
@@ -120,7 +122,7 @@
 
             for (let msg of msgs)
             {
-                AddChatMessage(msg, messageDiv);
+                AddChatMessage(msg);
             }
         }
 
@@ -176,7 +178,7 @@
 
                     for (let msg of data["messages"])
                     {
-                        AddChatMessage(msg, messageDiv);
+                        AddChatMessage(msg);
                     }
                 }
             });
