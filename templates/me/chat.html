@@ -124,7 +124,7 @@
             }
         }
 
-        function ChatUserEvent(event)
+        function ChatUserClickEvent(event)
         {
             const element = event.target;
 
@@ -187,7 +187,7 @@
             const divChatUser = document.createElement("div");
             divChatUser.setAttribute("class", "chatUser");
             divChatUser.setAttribute("chat-id", chat["chat_id"]);
-            divChatUser.addEventListener("click", ChatUserEvent);
+            divChatUser.addEventListener("click", ChatUserClickEvent);
             divChat.appendChild(divChatUser);
             //-----
             const divImg = document.createElement("div");
