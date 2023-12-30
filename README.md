@@ -51,3 +51,7 @@ git clone
 - Back-end:
   - Python flask
   - sqlite3 database ***(Optional you can choose your own)***
+
+## Topics that i research
+- database Object-relational mapping with python sqlalchemy.
+- more about python flask, html, css, javascript documentation.
