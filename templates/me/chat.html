@@ -25,7 +25,7 @@
 
         xhr.open("POST", "/me/chat");
 
-        function AddChatMessage(msg)
+        function AddMessageChild(msg)
         {
             const messageParent = document.querySelector(".messageDiv");
 
@@ -75,7 +75,7 @@
                     {
                         inputMessage.value = "";
                         json["message_id"] = status["message_id"];
-                        AddChatMessage(json);
+                        AddMessageChild(json);
                     }
                 }
             }
@@ -122,7 +122,7 @@
 
             for (let msg of msgs)
             {
-                AddChatMessage(msg);
+                AddMessageChild(msg);
             }
         }
 
@@ -178,7 +178,7 @@
 
                     for (let msg of data["messages"])
                     {
-                        AddChatMessage(msg);
+                        AddMessageChild(msg);
                     }
                 }
             });
