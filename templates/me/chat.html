@@ -81,7 +81,7 @@
             xhr.send(JSON.stringify(json));
         }
 
-        function AddChatMessages(msgs, chatId)
+        function AddMessageWrapperChildren(msgs, chatId)
         {
             let messageDiv = document.querySelector(".messageDiv");
             let chatInputGroup = document.querySelector(".input-group");
@@ -143,7 +143,7 @@
                 {
                     const msgs = JSON.parse(xhr.responseText);
 
-                    AddChatMessages(msgs, chatId);
+                    AddMessageWrapperChildren(msgs, chatId);
                 }
             }
 
