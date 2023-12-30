@@ -18,7 +18,6 @@
         </div>
     </div>
     <script>
-        const messageWrapper = document.querySelector(".messageWrapper");
         const divChat = document.querySelector(".chat");
         const sendBtn = document.querySelector(".sendBtn");
         const xhr = new XMLHttpRequest();
@@ -87,15 +86,18 @@
         {
             let messageDiv = document.querySelector(".messageDiv");
             let chatInputGroup = document.querySelector(".input-group");
+            const messageWrapper = document.querySelector(".messageWrapper");
 
             if (messageDiv)
             {
-                messageWrapper.removeChild(messageDiv);
+                messageDiv.remove();
+                messageDiv = "undefined";
             }
 
             if (chatInputGroup)
             {
-                messageWrapper.removeChild(chatInputGroup);
+                chatInputGroup.remove();
+                chatInputGroup = "undefined";
             }
 
             messageDiv = document.createElement("div");
