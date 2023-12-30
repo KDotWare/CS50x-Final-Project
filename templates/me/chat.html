@@ -85,7 +85,7 @@
         function AddMessageWrapperChildren(msgs, chatId)
         {
             let messageDiv = document.querySelector(".messageDiv");
-            let chatInputGroup = document.querySelector(".input-group");
+            let messageInputGroup = document.querySelector(".input-group");
             const messageWrapper = document.querySelector(".messageWrapper");
 
             if (messageDiv)
@@ -94,33 +94,33 @@
                 messageDiv = "undefined";
             }
 
-            if (chatInputGroup)
+            if (messageInputGroup)
             {
-                chatInputGroup.remove();
-                chatInputGroup = "undefined";
+                messageInputGroup.remove();
+                messageInputGroup = "undefined";
             }
 
             messageDiv = document.createElement("div");
             messageDiv.setAttribute("class", "messageDiv");
             messageWrapper.appendChild(messageDiv);
 
-            chatInputGroup = document.createElement("div");
-            chatInputGroup.setAttribute("class", "input-group");
-            chatInputGroup.setAttribute("chat-id", chatId);
-            messageWrapper.appendChild(chatInputGroup);
+            messageInputGroup = document.createElement("div");
+            messageInputGroup.setAttribute("class", "input-group");
+            messageInputGroup.setAttribute("chat-id", chatId);
+            messageWrapper.appendChild(messageInputGroup);
 
             const inputText = document.createElement("input");
             inputText.setAttribute("type", "text");
             inputText.setAttribute("class", "inputMessage form-control");
             inputText.setAttribute("placeholder", "Send a message");
-            chatInputGroup.appendChild(inputText);
+            messageInputGroup.appendChild(inputText);
 
             const inputButton = document.createElement("button");
             inputButton.setAttribute("class", "btn btn-primary");
             inputButton.setAttribute("type", "button");
             inputButton.innerHTML = "Send";
             inputButton.addEventListener("click", ButtonSendMessageEvent);
-            chatInputGroup.appendChild(inputButton);
+            messageInputGroup.appendChild(inputButton);
 
             for (let msg of msgs)
             {
