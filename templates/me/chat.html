@@ -46,7 +46,7 @@
             messageParent.appendChild(message);
         }
 
-        function SendMessageEvent(event)
+        function ButtonSendMessageEvent(event)
         {
             const inputMessage = document.querySelector(".inputMessage");
 
@@ -117,7 +117,7 @@
             inputButton.setAttribute("type", "button");
             inputButton.setAttribute("chat-id", chatId);
             inputButton.innerHTML = "Send";
-            inputButton.addEventListener("click", SendMessageEvent);
+            inputButton.addEventListener("click", ButtonSendMessageEvent);
             chatInputGroup.appendChild(inputButton);
 
             for (let msg of msgs)
