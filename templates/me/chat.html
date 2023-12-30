@@ -21,6 +21,7 @@
         const divChat = document.querySelector(".chat");
         const sendBtn = document.querySelector(".sendBtn");
         const xhr = new XMLHttpRequest();
+        const chatWorker = new Worker("{{ url_for('static', filename='js/chatworker.js') }}");
 
         xhr.open("POST", "/me/chat");
 
@@ -82,6 +83,32 @@
             xhr.send(JSON.stringify(json));
         }
 
+        function MessageWorkerEvent(event)
+        {
+            const data = event.data;
+            const messageDiv = document.querySelector(".messageDiv");
+            const messageInputGroup = document.querySelector(".input-group");
+
+            if (data["workerAction"] == "GET" && messageDiv.children.length > 0)
+            {
+                json = {};
+                json["message_id"] = messageDiv.children[messageDiv.children.length -1].getAttribute("id");
+                json["chat_id"] = messageInputGroup.getAttribute("chat-id");
+                chatWorker.postMessage(json);
+            } else if (data["workerAction"] == "UPDATE")
+            {
+                if (data["messages"]["message_id"] <= messageDiv.children[messageDiv.children.length -1].getAttribute("id"))
+                {
+                    return 1;
+                }
+
+                for (let msg of data["messages"])
+                {
+                    AddMessageChild(msg);
+                }
+            }
+        }
+
         function AddMessageWrapperChildren(msgs, chatId)
         {
             let messageDiv = document.querySelector(".messageDiv");
@@ -126,6 +153,9 @@
             {
                 AddMessageChild(msg);
             }
+
+            chatWorker.removeEventListener("message", MessageWorkerEvent);
+            chatWorker.addEventListener("message", MessageWorkerEvent);
         }
 
         function ChatUserClickEvent(event)
@@ -157,33 +187,6 @@
 
             xhr.setRequestHeader("Content-Type", "application/json");
             xhr.send(JSON.stringify(json));
-
-            const chatWorker = new Worker("{{ url_for('static', filename='js/chatworker.js') }}");
-
-            chatWorker.addEventListener("message", function(event)
-            {
-                const data = event.data;
-                const messageDiv = document.querySelector(".messageDiv");
-
-                if (data["workerAction"] == "GET" && messageDiv.children.length > 0)
-                {
-                    json = {};
-                    json["message_id"] = messageDiv.children[messageDiv.children.length -1].getAttribute("id");
-                    json["chat_id"] = chatId;
-                    chatWorker.postMessage(json);
-                } else if (data["workerAction"] == "UPDATE")
-                {
-                    if (data["messages"]["message_id"] <= messageDiv.children[messageDiv.children.length -1].getAttribute("id"))
-                    {
-                        return 1;
-                    }
-
-                    for (let msg of data["messages"])
-                    {
-                        AddMessageChild(msg);
-                    }
-                }
-            });
         }
 
         function AddChatUser(chat)
