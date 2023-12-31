@@ -6,7 +6,6 @@ KaiVegan is a customer to customer e-commerce. What is KaiVegan's purpose? to bu
 > [!NOTE]
 > Considered as prototype. <br>
 > Real-Time communication is not efficient unlike WebSockets or Server-Sent events.
-> Still in development.
 
 ## Features
 - Database Interaction:
@@ -41,6 +40,11 @@ pip3 install flask flask_session flask-sqlalchemy
 and then 
 ```
 git clone 
+```
+
+## Execution
+```
+python3 app.py -h  
 ```
 
 ## Technologies Used
