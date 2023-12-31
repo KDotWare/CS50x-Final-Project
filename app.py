@@ -28,7 +28,7 @@ PASSWORD_LENGTH_ALLOWED = 30
 
 parser = argparse.ArgumentParser(
                     prog="app.py",
-                    description="Customer to Customer e-commerce")
+                    description="small config for flask")
 parser.add_argument("-skey", type=str, help="If no argument is passed use default. A secret key that will be used for securely signing the session cookie and can be used for any other security related needs by extensions or your application.")
 parser.add_argument("-db", "-db-uri", type=str, required=True, help="The database URI that should be used for the connection. Examples: sqlite:////tmp/test.db, mysql://username:password@server/db")
 args = parser.parse_args()
