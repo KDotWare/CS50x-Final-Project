@@ -1,8 +1,5 @@
 """
     Todo's:
-    - create execution parameter
-    - run parameter setup database key is -sdb and value is [databasename]
-    - on run ignored directories
 """
 
 from flask import Flask, render_template, request, redirect, jsonify, session, send_from_directory
@@ -17,6 +14,9 @@ from os import getcwd
 from os.path import abspath, join
 import re
 import datetime
+import csv
+import sys
+import argparse
 
 UPLOAD_FOLDER = join(abspath(getcwd()), "uploads")
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
@@ -26,9 +26,16 @@ GENDERS = ("Male", "Female", "Non-binary")
 PASSWORD_ENCRYPT_METHOD = "pbkdf2:sha256"
 PASSWORD_LENGTH_ALLOWED = 30
 
+parser = argparse.ArgumentParser(
+                    prog="app.py",
+                    description="Customer to Customer e-commerce")
+parser.add_argument("-skey", type=str, help="If no argument is passed use default. A secret key that will be used for securely signing the session cookie and can be used for any other security related needs by extensions or your application.")
+parser.add_argument("-db", "-db-uri", type=str, required=True, help="The database URI that should be used for the connection. Examples: sqlite:////tmp/test.db, mysql://username:password@server/db")
+args = parser.parse_args()
+
 app = Flask(__name__)
-app.secret_key = "debug>.<q!w@e#r$t%y^"
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite3"
+app.secret_key = "debug>.<q!w@e#r$t%y^" if not args.skey else args.skey
+app.config["SQLALCHEMY_DATABASE_URI"] = args.db #"sqlite:///db.sqlite3"
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
@@ -663,4 +670,23 @@ def uploads(filename):
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()
+
+    with app.app_context():
+        try:
+            csvfile = open('category.csv', newline='')
+            reader = csv.reader(csvfile)
+        except:
+            print("No such file or directory: 'category.csv'")
+            sys.exit()
+
+        for row in reader:
+            for column in row:
+                db.session.add(Category(name=column, description=""))
+
+        try:
+            db.session.commit()
+        except:
+            print("category.csv already exist in db")
+        csvfile.close()
+
     app.run()
